@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(50) NOT NULL,
@@ -65,3 +66,20 @@ CREATE TABLE IF NOT EXISTS courseTags (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+CREATE TABLE IF NOT EXISTS enrollenment (
+    id_course INT,
+    id_user INT,
+    PRIMARY KEY (id_course, id_user),
+    FOREIGN KEY (id_course) REFERENCES course(id_course)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+CREATE TABLE role(
+    id_role INT AUTO_INCREMENT PRIMARY KEY,
+    role ENUM('admin', 'teacher', 'student'),
+    id_user INT,
+    FOREIGN KEY (id_user) REFERENCES users(id)
+)
