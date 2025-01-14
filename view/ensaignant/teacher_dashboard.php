@@ -9,8 +9,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100">
+<?php if(isset($_SESSION['error'])): ?>
+        <script>
+            Swal.fire({
+                title: "Error!",
+                text: "<?php echo $_SESSION['error']; ?>",
+                icon: "error"
+            });
+        </script>
+        <?php unset($_SESSION['error']); ?>
+    <?php elseif(isset($_SESSION['success'])): ?>
+        <script>
+            Swal.fire({
+                title: "Good job!",
+                text: "<?php echo $_SESSION['success']; ?>",
+                icon: "success"
+            });
+        </script>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
     <!-- Header -->
     <header class="bg-purple-600 text-white py-4 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">

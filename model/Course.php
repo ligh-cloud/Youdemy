@@ -7,7 +7,7 @@ abstract class Course {
     protected $db;
     protected $teacherId;
 
-    public function __construct($title, $description,$teacherId) {
+    public function __construct($title, $description, $teacherId) {
         $this->title = $title;
         $this->description = $description;
         $this->teacherId = $teacherId;
@@ -104,7 +104,7 @@ class DocumentImageCourse extends Course {
     private $document;
     private $image;
 
-    public function __construct($title, $description, $document, $image,$teacherId) {
+    public function __construct($title, $description, $document, $image, $teacherId) {
         parent::__construct($title, $description, $teacherId);
         $this->document = $document;
         $this->image = $image;
@@ -152,12 +152,12 @@ class VideoCourse extends Course {
     private $video;
 
     public function __construct($title, $description, $video, $teacherId) {
-        parent::__construct($title, $description,$teacherId);
+        parent::__construct($title, $description, $teacherId);
         $this->video = $video;
     }
 
     public function addCourse() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description, video, teacher_id) VALUES (:title, :description, :video , :teacher_id)");
+        $stmt = $this->db->prepare("INSERT INTO courses (title, description, video, teacher_id) VALUES (:title, :description, :video, :teacher_id)");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':video', $this->video);

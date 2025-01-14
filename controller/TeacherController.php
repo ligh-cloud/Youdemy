@@ -41,23 +41,17 @@ if (isset($_POST['add_course'])) {
     $imagePath = !empty($_FILES["image"]["name"]) ? uploadFile($_FILES["image"], $targetDir) : null;
     $videoPath = !empty($_FILES["video"]["name"]) ? uploadFile($_FILES["video"], $targetDir) : null;
 
-  
-    var_dump($documentPath);
-    var_dump($imagePath);
-    var_dump($videoPath);
-
     if ($videoPath === null) {
-        $course = new DocumentImageCourse($title, $description, $teacherId, $documentPath, $imagePath);
+        $course = new DocumentImageCourse($title, $description, $documentPath, $imagePath, $teacherId);
         $course->addCourse();
+       
+        $_SESSION['success'] = "Course document added succesfully";
     } else {
-        $course = new VideoCourse($title, $description, $teacherId, $videoPath);
+        $course = new VideoCourse($title, $description, $videoPath, $teacherId);
         $course->addCourse();
+       
+        $_SESSION['success'] = "Course video added succesfully";
     }
-
-    var_dump($title);
-    var_dump($description);
-    var_dump($documentPath);
-    var_dump($imagePath);
-    var_dump($teacherId);
+    header("location: ../view/ensaignant/teacher_dashboard.php");
 }
 ?>
