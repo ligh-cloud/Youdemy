@@ -10,6 +10,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body class="bg-gray-100">
+<form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
+    <button 
+        name="logout" 
+        type="submit" 
+        class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all"
+    >
+        Log out
+    </button>
+</form>
     <!-- Admin Navigation -->
     <nav class="bg-dark-800 text-white">
         <div class="max-w-7xl mx-auto px-4">

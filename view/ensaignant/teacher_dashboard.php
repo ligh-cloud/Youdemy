@@ -1,3 +1,5 @@
+<?php session_start() ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,23 +11,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body class="bg-gray-100">
-    <!-- Teacher Navigation -->
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16 items-center">
-                <div class="text-xl font-bold text-purple-600">Teacher Dashboard</div>
-                <div class="flex items-center gap-4">
-                    <button class="bg-purple-600 text-white px-4 py-2 rounded-lg">
-                        Add New Course
-                    </button>
-                    <div class="flex items-center gap-2">
-                        <span>Teacher Name</span>
-                        <img src="/api/placeholder/32/32" class="w-8 h-8 rounded-full">
+    <!-- Header -->
+    <header class="bg-purple-600 text-white py-4 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-xl font-bold">Teacher Dashboard</div>
+            <div class="flex items-center gap-2">
+                        <span><?php  echo "HELLO" . " " . $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
+                        
                     </div>
-                </div>
-            </div>
+            <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center">
+                <button 
+                    name="logout" 
+                    type="submit" 
+                    class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all"
+                >
+                    Log out
+                </button>
+            </form>
         </div>
-    </nav>
+    </header>
 
     <div class="flex min-h-screen">
         <!-- Teacher Sidebar -->
@@ -73,10 +77,23 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Add more courses here -->
                     </div>
                 </div>
             </div>
+
+            <!-- Add New Course Button -->
+            <div class="flex justify-end">
+                <a href="add-course.php" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Add New Course</a>
+            </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-purple-600 text-white py-4 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            © 2025 Teacher Dashboard. All rights reserved.
+        </div>
+    </footer>
 </body>
 </html>

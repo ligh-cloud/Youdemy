@@ -1,5 +1,8 @@
+<?php session_start() ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +10,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
     <!-- Student Navigation -->
     <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
+                <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
+                    <button
+                        name="logout"
+                        type="submit"
+                        class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all">
+                        Log out
+                    </button>
+                </form>
                 <div class="text-xl font-bold text-purple-600">Student Dashboard</div>
                 <div class="flex items-center gap-4">
                     <div class="relative">
-                        <input type="text" placeholder="Search courses..." 
-                               class="px-4 py-2 border rounded-lg">
+                        <input type="text" placeholder="Search courses..."
+                            class="px-4 py-2 border rounded-lg">
                     </div>
                     <div class="flex items-center gap-2">
-                        <span>Student Name</span>
+                        <span><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
                         <img src="/api/placeholder/32/32" class="w-8 h-8 rounded-full">
                     </div>
                 </div>
@@ -28,7 +40,7 @@
     </nav>
 
     <div class="flex min-h-screen">
-        <!-- Student Sidebar -->
+
         <div class="w-64 bg-white shadow-lg">
             <div class="p-4">
                 <div class="space-y-2">
@@ -40,7 +52,7 @@
             </div>
         </div>
 
-        <!-- Student Main Content -->
+
         <div class="flex-1 p-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="bg-white p-6 rounded-lg shadow">
@@ -81,4 +93,5 @@
         </div>
     </div>
 </body>
+
 </html>

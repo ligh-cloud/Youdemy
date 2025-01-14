@@ -133,8 +133,8 @@ session_start();
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Role</label>
                         <select name="role" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="student">Student</option>
-                            <option value="teacher">Teacher</option>
+                            <option value="3">Student</option>
+                            <option value="2">Teacher</option>
                         </select>
                     </div>
                 </div>
