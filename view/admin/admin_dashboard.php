@@ -1,6 +1,8 @@
 <!-- admin.html -->
 <!DOCTYPE html>
+<?php session_start() ?>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,29 +11,31 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
+
 <body class="bg-gray-100">
-<form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
-    <button 
-        name="logout" 
-        type="submit" 
-        class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all"
-    >
-        Log out
-    </button>
-</form>
+
     <!-- Admin Navigation -->
-    <nav class="bg-dark-800 text-white">
+    <nav class="bg-blue-600 text-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
                 <div class="text-xl font-bold">Admin Dashboard</div>
+
                 <div class="flex items-center gap-4">
                     <div class="relative">
                         <input type="text" placeholder="Search..." class="px-4 py-2 bg-gray-700 rounded-lg text-white">
                     </div>
                     <div class="flex items-center gap-2">
-                        <span>Admin Name</span>
-                        <img src="/api/placeholder/32/32" class="w-8 h-8 rounded-full">
+                        <span><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
+                       
                     </div>
+                    <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
+                        <button
+                            name="logout"
+                            type="submit"
+                            class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all">
+                            Log out
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -47,6 +51,7 @@
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">User Management</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Course Management</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Statistics</a>
+                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Add categories & Tags</a>
                 </div>
             </div>
         </div>
@@ -98,4 +103,5 @@
         </div>
     </div>
 </body>
+
 </html>

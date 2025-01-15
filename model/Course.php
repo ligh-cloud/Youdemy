@@ -103,24 +103,26 @@ abstract class Course {
 class DocumentImageCourse extends Course {
     private $document;
     private $image;
+    private $categoryId;
 
-    public function __construct($title, $description, $document, $image, $teacherId) {
+    public function __construct($title, $description, $document, $image, $teacherId , $categoryId) {
         parent::__construct($title, $description, $teacherId);
         $this->document = $document;
         $this->image = $image;
+        $this->categoryId = $categoryId;
     }
 
     public function addCourse() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description, content, image, teacher_id) VALUES (:title, :description, :document, :image, :teacher_id)");
+        $stmt = $this->db->prepare("INSERT INTO courses (title, description, content, image, teacher_id, categorie_id) VALUES (:title, :description, :document, :image, :teacher_id, :category_id)");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':document', $this->document);
         $stmt->bindParam(':image', $this->image);
         $stmt->bindParam(':teacher_id', $this->teacherId);
+        $stmt->bindParam(':category_id', $this->categoryId);
         $stmt->execute();
         echo "Course added with document and image.\n";
     }
-
     public function showCourse() {
         echo "Title: {$this->title}\n";
         echo "Description: {$this->description}\n";
@@ -150,18 +152,20 @@ class DocumentImageCourse extends Course {
 
 class VideoCourse extends Course {
     private $video;
-
-    public function __construct($title, $description, $video, $teacherId) {
+    private $categoryId;
+    public function __construct($title, $description, $video, $teacherId, $categoryId) {
         parent::__construct($title, $description, $teacherId);
         $this->video = $video;
+        $this->categoryId = $categoryId;
     }
 
     public function addCourse() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description, video, teacher_id) VALUES (:title, :description, :video, :teacher_id)");
+        $stmt = $this->db->prepare("INSERT INTO courses (title, description, video, teacher_id, categorie_id) VALUES (:title, :description, :video, :teacher_id, :category_id)");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':video', $this->video);
         $stmt->bindParam(':teacher_id', $this->teacherId);
+        $stmt->bindParam(':category_id', $this->categoryId);
         $stmt->execute();
         echo "Course added with video.\n";
     }

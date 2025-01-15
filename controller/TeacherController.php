@@ -10,6 +10,7 @@ if (isset($_POST['add_course'])) {
     $title = htmlspecialchars($_POST['title']);
     $description = htmlspecialchars($_POST['description']);
     $teacherId = $_SESSION['user_id'];
+    $categoryId = htmlspecialchars($_POST['category']);
     $targetDir = "../uploads/";
 
     function uploadFile($file, $targetDir) {
@@ -42,12 +43,12 @@ if (isset($_POST['add_course'])) {
     $videoPath = !empty($_FILES["video"]["name"]) ? uploadFile($_FILES["video"], $targetDir) : null;
 
     if ($videoPath === null) {
-        $course = new DocumentImageCourse($title, $description, $documentPath, $imagePath, $teacherId);
+        $course = new DocumentImageCourse($title, $description, $documentPath, $imagePath, $teacherId, $categoryId);
         $course->addCourse();
        
         $_SESSION['success'] = "Course document added succesfully";
     } else {
-        $course = new VideoCourse($title, $description, $videoPath, $teacherId);
+        $course = new VideoCourse($title, $description, $videoPath, $teacherId, $categoryId);
         $course->addCourse();
        
         $_SESSION['success'] = "Course video added succesfully";

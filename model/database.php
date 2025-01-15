@@ -1,4 +1,5 @@
 <?php
+if (!class_exists('Database')) {
 class Database {
     private static $instance = null;
     private $pdo;
@@ -26,5 +27,6 @@ class Database {
     public function getConnection() {
         return $this->pdo;
     }
+}
 }
 ?>
