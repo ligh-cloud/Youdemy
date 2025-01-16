@@ -1,7 +1,7 @@
 
 <?php
-require "../model/Tag.php";
-require "../model/category.php";
+require "../../model/Tag.php";
+require "../../model/category.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tags'])) {
     $tags = $_POST['tags'];

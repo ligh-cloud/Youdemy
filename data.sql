@@ -7,13 +7,14 @@ CREATE TABLE IF NOT EXISTS role (
     role ENUM('admin', 'teacher', 'student') NOT NULL
 );
 
--- Create users table with role_id
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    enseignant ENUM('waiting', 'accepted' , 'refused') DEFAULT 'accepted',
     ban ENUM('true', 'false') NOT NULL DEFAULT 'false',
     role_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

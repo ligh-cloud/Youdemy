@@ -16,7 +16,7 @@
     <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
-                <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
+                <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
                     <button
                         name="logout"
                         type="submit"

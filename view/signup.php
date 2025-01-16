@@ -55,7 +55,7 @@ session_start();
                 <h2 class="text-3xl font-bold text-gray-900">Welcome back</h2>
                 <p class="mt-2 text-gray-600">Please sign in to your account</p>
             </div>
-            <form method="POST" action="../controller/AuthController.php" class="mt-8 space-y-6" onsubmit="handleLogin(event)">
+            <form method="POST" action="../controller/public/AuthController.php" class="mt-8 space-y-6" onsubmit="handleLogin(event)">
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Email</label>
@@ -97,7 +97,7 @@ session_start();
                 <h2 class="text-3xl font-bold text-gray-900">Create Account</h2>
                 <p class="mt-2 text-gray-600">Join our learning platform</p>
             </div>
-            <form action="../controller/AuthController.php" method="POST" class="mt-8 space-y-6" onsubmit="handleSignup(event)">
+            <form action="../controller/public/AuthController.php" method="POST" class="mt-8 space-y-6" onsubmit="handleSignup(event)">
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>

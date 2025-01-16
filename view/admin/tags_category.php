@@ -10,7 +10,7 @@
 <body class="bg-gray-100 p-4">
     <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-4">Add Tags (Mass Insert)</h2>
-        <form id="mass-insert-form" hx-post="../../controller/add-tags.php" hx-target="#tags-message" hx-swap="outerHTML">
+        <form id="mass-insert-form" hx-post="../../controller/admin/add-tags.php" hx-target="#tags-message" hx-swap="outerHTML">
             <div class="mb-4">
                 <label for="tags" class="block text-gray-700">Tags (comma-separated):</label>
                 <input type="text" id="tags" name="tags" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -25,7 +25,7 @@
 
     <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
         <h2 class="text-2xl font-bold mb-4">Add Category</h2>
-        <form id="category-form" hx-post="../../controller/add-tags.php" hx-target="#category-message" hx-swap="outerHTML">
+        <form id="category-form" hx-post="../../controller/admin/add-tags.php" hx-target="#category-message" hx-swap="outerHTML">
             <div class="mb-4">
                 <label for="category" class="block text-gray-700">Category Name:</label>
                 <input type="text" id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">

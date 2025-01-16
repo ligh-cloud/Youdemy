@@ -28,7 +28,7 @@ $totalPages = ceil($totalCategories / $itemsPerPage);
     <header class="bg-purple-600 text-white py-4 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
             <div class="text-xl font-bold">Add New Course</div>
-            <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center">
+            <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center">
                 <button
                     name="logout"
                     type="submit"
@@ -41,7 +41,7 @@ $totalPages = ceil($totalCategories / $itemsPerPage);
 
     <div class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-6 text-center">Add New Course</h2>
-        <form action="../../controller/TeacherController.php" method="POST" enctype="multipart/form-data">
+        <form action="../../controller/teacher/TeacherController.php" method="POST" enctype="multipart/form-data">
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Course Title</label>
                 <input type="text" name="title" id="title" class="w-full px-4 py-2 border rounded-lg mt-2" required>

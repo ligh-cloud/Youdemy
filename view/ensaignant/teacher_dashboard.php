@@ -1,4 +1,10 @@
-<?php session_start() ?>
+<?php
+session_start();
+
+require "../../model/Course.php";
+$courses = new VideoCourse(null, null, null, $_SESSION['user_id'], null);
+$allCourses = $courses->getallCourse($_SESSION['user_id']);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,107 +19,108 @@
 </head>
 <body class="bg-gray-100">
 <?php if(isset($_SESSION['error'])): ?>
-        <script>
-            Swal.fire({
-                title: "Error!",
-                text: "<?php echo $_SESSION['error']; ?>",
-                icon: "error"
-            });
-        </script>
-        <?php unset($_SESSION['error']); ?>
-    <?php elseif(isset($_SESSION['success'])): ?>
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: "<?php echo $_SESSION['success']; ?>",
-                icon: "success"
-            });
-        </script>
-        <?php unset($_SESSION['success']); ?>
-    <?php endif; ?>
-    <!-- Header -->
-    <header class="bg-purple-600 text-white py-4 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <div class="text-xl font-bold">Teacher Dashboard</div>
-            <div class="flex items-center gap-2">
-                        <span><?php  echo "HELLO" . " " . $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
-                        
-                    </div>
-            <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center">
-                <button 
-                    name="logout" 
-                    type="submit" 
-                    class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all"
-                >
-                    Log out
-                </button>
-            </form>
+    <script>
+        Swal.fire({
+            title: "Error!",
+            text: "<?php echo $_SESSION['error']; ?>",
+            icon: "error"
+        });
+    </script>
+    <?php unset($_SESSION['error']); ?>
+<?php elseif(isset($_SESSION['success'])): ?>
+    <script>
+        Swal.fire({
+            title: "Good job!",
+            text: "<?php echo $_SESSION['success']; ?>",
+            icon: "success"
+        });
+    </script>
+    <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+
+<!-- Header -->
+<header class="bg-purple-600 text-white py-4 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="text-xl font-bold">Teacher Dashboard</div>
+        <div class="flex items-center gap-2">
+            <span><?php echo "HELLO " . $_SESSION['nom'] . " " . $_SESSION['prenom']; ?></span>
         </div>
-    </header>
+        <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center">
+            <button 
+                name="logout" 
+                type="submit" 
+                class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all"
+            >
+                Log out
+            </button>
+        </form>
+    </div>
+</header>
 
-    <div class="flex min-h-screen">
-        <!-- Teacher Sidebar -->
-        <div class="w-64 bg-white shadow-lg">
-            <div class="p-4">
-                <div class="space-y-2">
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Students</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Analytics</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Teacher Main Content -->
-        <div class="flex-1 p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Total Students</h3>
-                    <p class="text-3xl font-bold">256</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Active Courses</h3>
-                    <p class="text-3xl font-bold">8</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Average Rating</h3>
-                    <p class="text-3xl font-bold">4.8</p>
-                </div>
-            </div>
-
-            <!-- Course List -->
-            <div class="bg-white rounded-lg shadow mb-6">
-                <div class="p-6">
-                    <h2 class="text-xl font-bold mb-4">My Courses</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="border rounded-lg overflow-hidden">
-                            <img src="/api/placeholder/400/200" alt="Course" class="w-full h-40 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-semibold">Web Development Basics</h3>
-                                <p class="text-gray-600 text-sm mb-2">Students: 45</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-yellow-500">★ 4.9</span>
-                                    <button class="text-purple-600">Edit</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Add more courses here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add New Course Button -->
-            <div class="flex justify-end">
-                <a href="add-course.php" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Add New Course</a>
+<div class="flex min-h-screen">
+    <!-- Teacher Sidebar -->
+    <div class="w-64 bg-white shadow-lg">
+        <div class="p-4">
+            <div class="space-y-2">
+                <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
+                <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
+                <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Students</a>
+                <a href="statistics.php" class="block px-4 py-2 rounded hover:bg-purple-50">Analytics</a>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-purple-600 text-white py-4 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            © 2025 Teacher Dashboard. All rights reserved.
+    <!-- Teacher Main Content -->
+    <div class="flex-1 p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Total Students</h3>
+                <p class="text-3xl font-bold">256</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Active Courses</h3>
+                <p class="text-3xl font-bold">8</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Average Rating</h3>
+                <p class="text-3xl font-bold">4.8</p>
+            </div>
         </div>
-    </footer>
+
+        <!-- Course List -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="p-6">
+                <h2 class="text-xl font-bold mb-4">My Courses</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <?php foreach($allCourses as $course): ?>
+                    <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                        <img src="<?php echo $course['image'];?>" alt="Course" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold"><?php echo $course['title']; ?></h3>
+                            <p class="text-gray-600 text-sm mb-2">Students: 45</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-yellow-500">★ 4.9</span>
+                                <button class="text-purple-600 hover:text-purple-800">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Course Button -->
+        <div class="flex justify-end">
+            <a href="add-course.php" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">Add New Course</a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-purple-600 text-white py-4 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        © 2025 Teacher Dashboard. All rights reserved.
+    </div>
+</footer>
 </body>
 </html>

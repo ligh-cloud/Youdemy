@@ -98,6 +98,27 @@ abstract class Course {
         $course = $stmt->fetch(PDO::FETCH_ASSOC);
         return $course ? $course['id_course'] : null;
     }
+    public static function getallCourse($teacherId){
+        $db = Database::getInstance()->getConnection();
+        $stm = $db->prepare("SELECT *FROM courses WHERE teacher_id = :teacher_id");
+        $stm->bindParam(':teacher_id', $teacherId);
+        $stm->execute();
+        $allCourses = $stm->fetchall(PDO::FETCH_ASSOC);
+        return $allCourses;
+    }
+    public static function getAll() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM courses");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function deleteById($id) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("DELETE FROM courses WHERE id_course = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 
 class DocumentImageCourse extends Course {
@@ -148,6 +169,7 @@ class DocumentImageCourse extends Course {
             }
         }
     }
+    
 }
 
 class VideoCourse extends Course {

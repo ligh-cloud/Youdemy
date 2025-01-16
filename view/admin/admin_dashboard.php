@@ -28,7 +28,7 @@
                         <span><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
                        
                     </div>
-                    <form method="POST" action="../../controller/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
+                    <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
                         <button
                             name="logout"
                             type="submit"
@@ -47,9 +47,9 @@
             <div class="p-4">
                 <div class="space-y-2">
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Teacher Validation</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">User Management</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Course Management</a>
+                    <a href="teacher_accept.php" class="block px-4 py-2 rounded hover:bg-purple-50">Teacher Validation</a>
+                    <a href="manage_users.php" class="block px-4 py-2 rounded hover:bg-purple-50">User Management</a>
+                    <a href="manage_courses.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Management</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Statistics</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Add categories & Tags</a>
                 </div>
