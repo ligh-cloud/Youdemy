@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../../model/Statistics.php";
+require "../../model/statistic.php";
 
 $stats = new Statistics();
 $teacherId = $_SESSION['user_id'];

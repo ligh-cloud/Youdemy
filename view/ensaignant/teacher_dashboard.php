@@ -63,7 +63,7 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
         <div class="p-4">
             <div class="space-y-2">
                 <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
+                <a href="get_my_courses.php" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
                 <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Students</a>
                 <a href="statistics.php" class="block px-4 py-2 rounded hover:bg-purple-50">Analytics</a>
             </div>
@@ -94,7 +94,7 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php foreach($allCourses as $course): ?>
                     <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                        <img src="<?php echo $course['image'];?>" alt="Course" class="w-full h-40 object-cover">
+                        <img src="../../uploads/<?php echo $course['image'];?>" alt="Course" class="w-full h-40 object-cover">
                         <div class="p-4">
                             <h3 class="font-semibold"><?php echo $course['title']; ?></h3>
                             <p class="text-gray-600 text-sm mb-2">Students: 45</p>

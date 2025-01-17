@@ -81,7 +81,7 @@ if (isset($_POST['signin'])) {
                     if ($user->getEnseignant() === 'waiting') {
                         header('Location: ../view/ensaignant/waiting_aprove.php');
                     } elseif ($user->getEnseignant() === 'accepted') {
-                        header('Location: ../view/ensaignant/teacher_dashboard.php');
+                        header('Location: ../../view/ensaignant/teacher_dashboard.php');
                     } else {
                         $_SESSION['error'] = "Your account has been banned";
                         header('Location: ../../view/signup.php');

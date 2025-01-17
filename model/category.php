@@ -26,6 +26,13 @@ class Category {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function getAll(){
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM categories");
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getCategoriesCount() {
         $db = Database::getInstance()->getConnection();

@@ -19,10 +19,10 @@ if (isset($_POST['add_course'])) {
             mkdir($targetDir, 0777, true);
         }
 
-        function uploadFile($file, $targetDir) {
+        function uploadFile($file) {
             $fileName = basename($file["name"]);
             $uniqueName = uniqid() . '_' . time() . '.' . strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $targetFile = $targetDir . $uniqueName;
+            $targetFile =  $uniqueName;
 
             if (!move_uploaded_file($file["tmp_name"], $targetFile)) {
                 throw new Exception("Failed to move uploaded file");
@@ -36,13 +36,13 @@ if (isset($_POST['add_course'])) {
         $videoPath = null;
 
         if (!empty($_FILES["document"]["name"])) {
-            $documentPath = uploadFile($_FILES["document"], $targetDir);
+            $documentPath = uploadFile($_FILES["document"]);
         }
         if (!empty($_FILES["image"]["name"])) {
-            $imagePath = uploadFile($_FILES["image"], $targetDir);
+            $imagePath = uploadFile($_FILES["image"]);
         }
         if (!empty($_FILES["video"]["name"])) {
-            $videoPath = uploadFile($_FILES["video"], $targetDir);
+            $videoPath = uploadFile($_FILES["video"]);
         }
 
         if ($videoPath) {
