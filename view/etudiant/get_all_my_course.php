@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-$courses = Course::getCourseDetail($userId);
+$courses = Course::getCourseByStudent($userId);
 
 
 ?>
@@ -32,8 +32,8 @@ $courses = Course::getCourseDetail($userId);
         <div class="w-64 bg-white shadow-lg">
             <div class="p-4">
                 <div class="space-y-2">
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
+                    <a href="student_dashboard.php" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
+                    <a href="get_all_my_course.php" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
                     <a href="search.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Progress</a>
                 </div>
