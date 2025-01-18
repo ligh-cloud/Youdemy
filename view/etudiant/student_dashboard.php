@@ -12,7 +12,9 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Student Navigation -->
+
+
+<!-- Student Navigation -->
     <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
@@ -38,6 +40,35 @@
             </div>
         </div>
     </nav>
+    <?php
+
+
+
+//  success message
+
+if (isset($_SESSION['success'])) {
+    echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">' . $_SESSION['success'] . '</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.707 10l3.641 3.641a.5.5 0 1 1-.707.707L10 10.707l-3.641 3.641a.5.5 0 0 1-.707-.707L9.293 10 5.652 6.359a.5.5 0 1 1 .707-.707L10 9.293l3.641-3.641a.5.5 0 0 1 .707 0z"/></svg>
+            </span>
+          </div>';
+    unset($_SESSION['success']); 
+}
+
+// error message
+if (isset($_SESSION['error'])) {
+    echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline">' . $_SESSION['error'] . '</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.707 10l3.641 3.641a.5.5 0 1 1-.707.707L10 10.707l-3.641 3.641a.5.5 0 0 1-.707-.707L9.293 10 5.652 6.359a.5.5 0 1 1 .707-.707L10 9.293l3.641-3.641a.5.5 0 0 1 .707 0z"/></svg>
+            </span>
+          </div>';
+    unset($_SESSION['error']); 
+}
+?>      
 
     <div class="flex min-h-screen">
 
@@ -45,8 +76,8 @@
             <div class="p-4">
                 <div class="space-y-2">
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
+                    <a href="get_all_my_course.php" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
+                    <a href="search.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
                     <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Progress</a>
                 </div>
             </div>

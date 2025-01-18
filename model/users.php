@@ -67,7 +67,7 @@ class User {
         $db = Database::getInstance()->getConnection();
         try {
             if ($this->id) {
-                // Update existing user
+                
                 $stmt = $db->prepare("
                     UPDATE users 
                     SET nom = :nom, prenom = :prenom, email = :email, role_id = :role_id, enseignant = :enseignant
@@ -248,6 +248,17 @@ class Teacher extends User {
             throw new Exception("An error occurred while saving the teacher.");
         }
     }
+    public static function getTopTeachers() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT users.nom, COUNT(courses.id_course) as courses 
+                              FROM users 
+                              JOIN courses ON users.id = courses.teacher_id 
+                              GROUP BY users.nom 
+                              ORDER BY courses DESC 
+                              LIMIT 3");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     public function setFromDatabase($data) {
         parent::setFromDatabase($data);
@@ -282,5 +293,4 @@ class Student extends User {
 
    
 }
-?>
 ?>

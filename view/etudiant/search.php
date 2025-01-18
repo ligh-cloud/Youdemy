@@ -1,39 +1,3 @@
-<?php 
-session_start();
-if(isset($_SESSION['user_id'])){
-    echo '
-    <header class="bg-purple-600 text-white py-4 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <a href="../index.php"><div class="text-xl font-bold">YouDemy</div></a>
-            <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center">
-                <button
-                    name="logout"
-                    type="submit"
-                    class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all">
-                    Log out
-                </button>
-            </form>
-        </div>
-    </header>';
-} 
-else{
-    echo '<div class="flex items-center p-4">
-                <div class="flex-shrink-0 flex items-center">
-                    <img src="/api/placeholder/40/40" alt="Logo" class="h-10 w-10 rounded-lg mr-2">
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">Youdemy</h1>
-                </div>
-                <nav class="hidden lg:flex lg:space-x-8 ml-10">
-                    <a href="../index.php" class="nav-link active text-blue-600 hover:underline" data-section="home">Accueil</a>
-                    <a href="#" class="nav-link text-gray-600 hover:underline" data-section="courses">Cours</a>
-                    <a href="#" class="nav-link student-only hidden text-gray-600 hover:underline" data-section="my-courses">Mes Cours</a>
-                    <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="manage">Gérer</a>
-                    <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="stats">Statistiques</a>
-                </nav>
-          </div>';
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,20 +8,47 @@ else{
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Course Search</h1>
-            <div class="search-wrapper">
+<body class="bg-gray-100">
+<div class="flex min-h-screen">
+<div class="w-64 bg-white shadow-lg">
+            <div class="p-4">
+                <div class="space-y-2">
+                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
+                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
+                    <a href="search.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
+                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Progress</a>
+                </div>
+            </div>
+        </div>
+
+    <div class="container mx-auto p-4">
+        <header class="mb-6">
+            
+            <div class="flex items-center p-4 bg-white shadow-md rounded-lg">
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="/api/placeholder/40/40" alt="Logo" class="h-10 w-10 rounded-lg mr-2">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">Youdemy</h1>
+                </div>
+                <nav class="hidden lg:flex lg:space-x-8 ml-10">
+                    <a href="student_dashboard.php" class="nav-link active text-blue-600 hover:underline" data-section="home">Accueil</a>
+                    <a href="#" class="nav-link text-gray-600 hover:underline" data-section="courses">Cours</a>
+                    <a href="#" class="nav-link student-only hidden text-gray-600 hover:underline" data-section="my-courses">Mes Cours</a>
+                    <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="manage">Gérer</a>
+                    <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="stats">Statistiques</a>
+                </nav>
+            </div>
+            <h1 class="text-center text-3xl font-bold mt-4">Course Search</h1>
+            <div class="search-wrapper relative max-w-lg mx-auto mt-6">
                 <input type="text" 
                        name="search" 
                        placeholder="Search courses, teachers, tags..."
-                       hx-post="../controller/public/search-results.php"
+                       hx-post="../../controller/public/search-results.php"
                        hx-trigger="input changed delay:500ms, load"
                        hx-target="#results"
-                       hx-indicator=".htmx-indicator">
-                <div class="htmx-indicator">
-                    <svg class="spinner" viewBox="0 0 50 50">
+                       hx-indicator=".htmx-indicator"
+                       class="w-full px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <div class="htmx-indicator absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <svg class="spinner w-5 h-5 text-blue-500" viewBox="0 0 50 50">
                         <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
                     </svg>
                 </div>
@@ -65,14 +56,22 @@ else{
         </header>
         
         <main>
-            <div id="results" class="results-grid">
-                <!-- Results  -->
+            <div id="results" class="results-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Example of a course card -->
+               
+                <!-- Add more course cards here -->
             </div>
         </main>
     </div>
+    </div>
+    <script>
+        function enrollCourse(courseId) {
+            window.location.href = `enroll_course.php?id=${courseId}`;
+        }
+    </script>
 </body>
 <style>
-    :root {
+:root {
     --primary-color: #4a90e2;
     --secondary-color: #f5f5f5;
     --text-color: #333;
@@ -236,6 +235,29 @@ input[name="search"]:focus {
         stroke-dasharray: 90, 150;
         stroke-dashoffset: -124;
     }
+}
+
+.enroll-button {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 1rem;
+}
+
+.enroll-button:hover {
+    background-color: #357ab7;
+    transform: translateY(-2px);
+}
+
+.enroll-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.4);
 }
 
 @media (max-width: 768px) {

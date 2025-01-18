@@ -46,62 +46,18 @@
         <div class="w-64 bg-white shadow-lg">
             <div class="p-4">
                 <div class="space-y-2">
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
+                    <a href="admin_dashboard.php" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
                     <a href="teacher_accept.php" class="block px-4 py-2 rounded hover:bg-purple-50">Teacher Validation</a>
                     <a href="manage_users.php" class="block px-4 py-2 rounded hover:bg-purple-50">User Management</a>
                     <a href="manage_courses.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Management</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Statistics</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Add categories & Tags</a>
+                    
+                    <a href="tags_category.php" class="block px-4 py-2 rounded hover:bg-purple-50">Add categories & Tags</a>
                 </div>
             </div>
         </div>
 
         <!-- Admin Main Content -->
-        <div class="flex-1 p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Total Users</h3>
-                    <p class="text-3xl font-bold">1,234</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Total Courses</h3>
-                    <p class="text-3xl font-bold">86</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Pending Approvals</h3>
-                    <p class="text-3xl font-bold">12</p>
-                </div>
-            </div>
-
-            <!-- Teacher Approval Section -->
-            <div class="bg-white rounded-lg shadow mb-6">
-                <div class="p-6">
-                    <h2 class="text-xl font-bold mb-4">Pending Teacher Approvals</h2>
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="p-3 text-left">Name</th>
-                                <th class="p-3 text-left">Subject</th>
-                                <th class="p-3 text-left">Date</th>
-                                <th class="p-3 text-left">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-t">
-                                <td class="p-3">John Doe</td>
-                                <td class="p-3">Web Development</td>
-                                <td class="p-3">2024-01-13</td>
-                                <td class="p-3">
-                                    <button class="bg-green-500 text-white px-3 py-1 rounded mr-2">Approve</button>
-                                    <button class="bg-red-500 text-white px-3 py-1 rounded">Reject</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+        <?php include "admin_stats.php"; ?>
 </body>
 
 </html>

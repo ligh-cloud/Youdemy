@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    enseignant ENUM('waiting', 'accepted' , 'refused') DEFAULT 'accepted',
+    enseignant ENUM('waiting', 'accepted' , 'refused') DEFAULT 'waiting',
     ban ENUM('true', 'false') NOT NULL DEFAULT 'false',
     role_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

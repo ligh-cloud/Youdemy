@@ -71,7 +71,7 @@ abstract class Course {
         $this->description = null;
         $this->students = [];
     }
-
+  
     public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newMedia = null) {
         $courseId = $this->getCourseId();
         if ($courseId) {
@@ -119,7 +119,86 @@ abstract class Course {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+    public static function getTotalCourses() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) as total FROM courses");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public static function getCoursesByCategory() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT categories.nom, COUNT(courses.id_course) as total 
+                              FROM courses 
+                              JOIN categories ON courses.categorie_id = categories.id 
+                              GROUP BY categories.nom");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getCourseWithMostStudents() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT courses.title, COUNT(enrollenment.id_user) as students 
+                              FROM enrollenment 
+                              JOIN courses ON enrollenment.id_course = courses.id_course 
+                              GROUP BY courses.title 
+                              ORDER BY students DESC 
+                              LIMIT 1");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public static function getCourseByStudent($userId){
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("SELECT courses.id_course, courses.title, courses.description, courses.image, users.nom AS teacher_firstname, users.prenom AS teacher_name, categories.nom AS category_name 
+                                  FROM enrollenment 
+                                  JOIN courses ON enrollenment.id_course = courses.id_course 
+                                  JOIN users ON courses.teacher_id = users.id 
+                                  JOIN categories ON courses.categorie_id = categories.id 
+                                  WHERE enrollenment.id_user = :user_id");
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
+    public static function getCourseDetail($courseId) {
+        try {
+            $db = Database::getInstance()->getConnection();
+
+            $stmt = $db->prepare("SELECT courses.id_course, courses.title, courses.description, courses.image, courses.content, courses.video, 
+                                         users.nom AS teacher_firstname, users.prenom AS teacher_name, categories.nom AS category_name 
+                                  FROM courses 
+                                  JOIN users ON courses.teacher_id = users.id 
+                                  JOIN categories ON courses.categorie_id = categories.id 
+                                  WHERE courses.id_course = :course_id");
+            $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+            $stmt->execute();
+            $course = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$course) {
+                return null;  
+            }
+    
+   
+            $stmt = $db->prepare("SELECT COUNT(*) AS enrollment_count FROM enrollenment WHERE id_course = :course_id");
+            $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+            $stmt->execute();
+            $enrollment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $course['enrollment_count'] = $enrollment['enrollment_count'];
+            
+            return $course;
+    
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
 }
+
 
 class DocumentImageCourse extends Course {
     private $document;
