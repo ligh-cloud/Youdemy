@@ -51,13 +51,19 @@ $topTeachers = Teacher::getTopTeachers();
                 </tbody>
             </table>
         </div>
-
+        
         <div class="bg-white shadow-md rounded-lg p-6 mb-6">
             <h2 class="text-2xl font-semibold mb-4">Course with Most Students</h2>
             <p class="text-lg">
+            <?php if($courseWithMostStudents): ?>
                 <?php echo htmlspecialchars($courseWithMostStudents['title']); ?> (<?php echo htmlspecialchars($courseWithMostStudents['students']); ?> students)
+                <?php else: ?>
+                    <h2 class="text-2xl font-semibold text-red-600 mb-4">No data </h2>
+                    <?php endif; ?>
             </p>
         </div>
+        
+        
 
         <div class="bg-white shadow-md rounded-lg p-6 mb-6">
             <h2 class="text-2xl font-semibold mb-4">Top 3 Teachers</h2>

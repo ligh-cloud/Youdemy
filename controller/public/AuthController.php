@@ -36,7 +36,7 @@ if (isset($_POST['create_acc'])) {
 
        
         $userId = ($role === 2) 
-            ? Teacher::signup($nom, $prenom, $email, $role, $password)
+            ? Teacher::signup($nom, $prenom, $email, $role, $password, 'waiting')
             : Student::signup($nom, $prenom, $email, $role, $password);
 
         $_SESSION['success'] = "Account created successfully!";
@@ -50,7 +50,7 @@ if (isset($_POST['create_acc'])) {
     }
 }
 
-// Sign In Handler
+
 if (isset($_POST['signin'])) {
     try {
         if (!isset($_POST['email']) || !isset($_POST['password'])) {

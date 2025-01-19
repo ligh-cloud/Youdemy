@@ -212,7 +212,7 @@ class Teacher extends User {
         $db = Database::getInstance()->getConnection();
         try {
             if ($this->id) {
-                // Update existing teacher
+
                 $stmt = $db->prepare("
                     UPDATE users 
                     SET nom = :nom, prenom = :prenom, email = :email, role_id = :role_id, enseignant = :enseignant, ban = :ban
