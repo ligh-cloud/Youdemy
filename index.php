@@ -157,25 +157,25 @@ $courses = Course::getAll();
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold mb-8 text-center" data-aos="fade-up">Catégories populaires</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categories-grid">
-                    <!-- Initial "All" category button -->
-                    <button class="category-filter active px-4 py-2 rounded-full text-sm" 
-                            data-category="all" 
-                            hx-get="controller/public/fetch_courses.php?category=all" 
-                            hx-trigger="click" 
-                            hx-target="#courses-grid" 
-                            hx-swap="innerHTML">
-                        Tous
-                    </button>
-                    <?php foreach ($categories as $category): ?>
-                        <button class="category-filter px-4 py-2 rounded-full text-sm" 
-                                data-category="<?php echo htmlspecialchars($category['nom']); ?>" 
-                                hx-get="controller/public/fetch_courses.php?category=<?php echo urlencode($category['nom']); ?>" 
-                                hx-trigger="click" 
-                                hx-target="#courses-grid" 
-                                hx-swap="innerHTML">
-                            <?php echo htmlspecialchars($category['nom']); ?>
-                        </button>
-                    <?php endforeach; ?>
+    <button class="category-filter active px-4 py-2 rounded-full text-sm" 
+            data-category="all" 
+            hx-get="controller/public/fetch_courses.php?category=all" 
+            hx-trigger="click" 
+            hx-target="#courses-grid" 
+            hx-swap="innerHTML">
+        Tous
+    </button>
+    <?php foreach ($categories as $category): ?>
+        <button class="category-filter px-4 py-2 rounded-full text-sm" 
+                data-category="<?php echo htmlspecialchars($category['id']); ?>" 
+                hx-get="controller/public/fetch_courses.php?category=<?php echo urlencode($category['id']); ?>" 
+                hx-trigger="click" 
+                hx-target="#courses-grid" 
+                hx-swap="innerHTML">
+            <?php echo htmlspecialchars($category['nom']); ?>
+        </button>
+    <?php endforeach; ?>
+</div>
                 </div>
             </div>
         </section>

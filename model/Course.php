@@ -72,14 +72,15 @@ abstract class Course {
         $this->students = [];
     }
   
-    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newMedia = null) {
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
         $courseId = $this->getCourseId();
         if ($courseId) {
-            $stmt = $this->db->prepare("UPDATE courses SET title = :newTitle, description = :newDescription, content = :newContent, image = :newMedia, video = :newMedia WHERE id_course = :id_course");
+            $stmt = $this->db->prepare("UPDATE courses SET title = :newTitle, description = :newDescription, content = :newContent, image = :newImage, video = :newVideo WHERE id_course = :id_course");
             $stmt->bindParam(':newTitle', $newTitle);
             $stmt->bindParam(':newDescription', $newDescription);
             $stmt->bindParam(':newContent', $newContent);
-            $stmt->bindParam(':newMedia', $newMedia);
+            $stmt->bindParam(':newImage', $newImage);
+            $stmt->bindParam(':newVideo', $newVideo);
             $stmt->bindParam(':id_course', $courseId);
             $stmt->execute();
             $this->title = $newTitle;
@@ -230,17 +231,17 @@ class DocumentImageCourse extends Course {
         echo "Image: {$this->image}\n";
     }
 
-    public function modifierCour($newTitle = null, $newDescription = null, $newDocument = null, $newImage = null) {
-        parent::modifierCour($newTitle, $newDescription, $newDocument, $newImage);
-        if ($newDocument !== null || $newImage !== null) {
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
+        parent::modifierCour($newTitle, $newDescription, $newContent, $newImage, $newVideo);
+        if ($newContent !== null || $newImage !== null) {
             $courseId = $this->getCourseId();
             if ($courseId) {
-                $stmt = $this->db->prepare("UPDATE courses SET content = :newDocument, image = :newImage WHERE id_course = :id_course");
-                $stmt->bindParam(':newDocument', $newDocument);
+                $stmt = $this->db->prepare("UPDATE courses SET content = :newContent, image = :newImage WHERE id_course = :id_course");
+                $stmt->bindParam(':newContent', $newContent);
                 $stmt->bindParam(':newImage', $newImage);
                 $stmt->bindParam(':id_course', $courseId);
                 $stmt->execute();
-                $this->document = $newDocument;
+                $this->document = $newContent;
                 $this->image = $newImage;
                 echo "modifierCour: Course details updated with new document and image.\n";
             } else {
@@ -277,8 +278,8 @@ class VideoCourse extends Course {
         echo "Video: {$this->video}\n";
     }
 
-    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newVideo = null) {
-        parent::modifierCour($newTitle, $newDescription, $newContent, $newVideo);
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
+        parent::modifierCour($newTitle, $newDescription, $newContent, $newImage, $newVideo);
         if ($newVideo !== null) {
             $courseId = $this->getCourseId();
             if ($courseId) {

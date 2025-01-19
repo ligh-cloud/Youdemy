@@ -29,6 +29,13 @@ class Tags {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function getAllTagsSelect() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM tags ");
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getTagsCount() {
         $db = Database::getInstance()->getConnection();

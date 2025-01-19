@@ -14,7 +14,13 @@ if (!isset($_GET['id'])) {
 }
 
 $courseId = $_GET['id'];
-$course = Course::getAll()[$courseId];
+$course = Course::getCourseDetail($courseId); 
+
+if (!$course) {
+    $_SESSION['error'] = "Course not found.";
+    header("Location: get_my_courses.php");
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
@@ -23,17 +29,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $categoryId = htmlspecialchars($_POST['category']);
         $teacherId = $_SESSION['user_id'];
 
-        $document = isset($_FILES['document']['name']) ? $_FILES['document']['name'] : null;
-        $image = isset($_FILES['image']['name']) ? $_FILES['image']['name'] : null;
-        $video = isset($_FILES['video']['name']) ? $_FILES['video']['name'] : null;
+        $document = null;
+        $image = null;
+        $video = null;
 
-        if ($video) {
-            $course = new VideoCourse($title, $description, $video, $teacherId, $categoryId);
-        } else {
-            $course = new DocumentImageCourse($title, $description, $document, $image, $teacherId, $categoryId);
+     
+        if (isset($_FILES['document']) && $_FILES['document']['error'] === UPLOAD_ERR_OK) {
+            $document = $_FILES['document']['name'];
+            move_uploaded_file($_FILES['document']['tmp_name'], "../../uploads/documents/" . $document);
         }
-        
-        $course->modifierCour($title, $description, $document, $image);
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], "../../uploads/images/" . $image);
+        }
+
+        if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
+            $video = $_FILES['video']['name'];
+            move_uploaded_file($_FILES['video']['tmp_name'], "../../uploads/videos/" . $video);
+        }
+
+
+        $document = $document ?? $course['content'];
+        $image = $image ?? $course['image'];
+        $video = $video ?? $course['video'];
+
+        if ($course['video']) {
+            $courseObj = new VideoCourse($course['title'], $course['description'], $video, $teacherId, $categoryId);
+        } else {
+            $courseObj = new DocumentImageCourse($course['title'], $course['description'], $document, $image, $teacherId, $categoryId);
+        }
+
+        $courseObj->modifierCour($title, $description, $document, $image, $video);
         $_SESSION['success'] = "Course updated successfully.";
         header("Location: get_my_courses.php");
         exit();
@@ -42,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         error_log($e->getMessage());
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -73,15 +99,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <textarea name="description" class="border rounded w-full py-2 px-3 mb-4" required><?php echo htmlspecialchars($course['description']); ?></textarea>
         
         <label class="block mb-2">Category</label>
-        <input type="text" name="category" value="<?php echo htmlspecialchars($course['categorie_id']); ?>" class="border rounded w-full py-2 px-3 mb-4" required>
+        <input type="text" name="category" value="<?php echo htmlspecialchars($course['category_name']); ?>" class="border rounded w-full py-2 px-3 mb-4" required>
         
-        <label class="block mb-2">Document</label>
+        <label class="block mb-2">Document <?php echo $course['content'] ? '(Current: '.$course['content'].')' : ''; ?></label>
         <input type="file" name="document" class="border rounded w-full py-2 px-3 mb-4">
         
-        <label class="block mb-2">Image</label>
+        <label class="block mb-2">Image <?php echo $course['image'] ? '(Current: '.$course['image'].')' : ''; ?></label>
         <input type="file" name="image" class="border rounded w-full py-2 px-3 mb-4">
         
-        <label class="block mb-2">Video</label>
+        <label class="block mb-2">Video <?php echo $course['video'] ? '(Current: '.$course['video'].')' : ''; ?></label>
         <input type="file" name="video" class="border rounded w-full py-2 px-3 mb-4">
         
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Course</button>

@@ -8,7 +8,7 @@ $courses = Course::getAll();
 
 if (isset($_GET['category']) && $_GET['category'] !== 'all') {
     $filteredCourses = array_filter($courses, function($course) {
-        return $course['category_name'] === $_GET['category'];
+        return $course['categorie_id'] == $_GET['category']; 
     });
 } else {
     $filteredCourses = $courses;
@@ -16,7 +16,7 @@ if (isset($_GET['category']) && $_GET['category'] !== 'all') {
 
 if (isset($_GET['type']) && $_GET['type'] === 'categories') {
     foreach ($categories as $category) {
-        echo '<button class="category-filter px-4 py-2 rounded-full text-sm" data-category="' . htmlspecialchars($category['nom']) . '" hx-get="controller/public/fetch_courses.php?category=' . urlencode($category['nom']) . '" hx-trigger="click" hx-target="#courses-grid" hx-swap="innerHTML">';
+        echo '<button class="category-filter px-4 py-2 rounded-full text-sm" data-category="' . htmlspecialchars($category['id']) . '" hx-get="controller/public/fetch_courses.php?category=' . urlencode($category['id']) . '" hx-trigger="click" hx-target="#courses-grid" hx-swap="innerHTML">';
         echo htmlspecialchars($category['nom']);
         echo '</button>';
     }

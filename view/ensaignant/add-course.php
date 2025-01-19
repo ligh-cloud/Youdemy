@@ -1,5 +1,6 @@
 <?php
 require "../../model/category.php";
+require "../../model/tag.php";
 
 
 $itemsPerPage = 10;
@@ -8,6 +9,7 @@ $offset = ($page - 1) * $itemsPerPage;
 
 $category = new Category('', '');
 $allCategories = $category->getAllCategories($offset, $itemsPerPage);
+$allTags = Tags::getAllTagsSelect();
 $totalCategories = $category->getCategoriesCount();
 $totalPages = ceil($totalCategories / $itemsPerPage);
 ?>
@@ -55,6 +57,14 @@ $totalPages = ceil($totalCategories / $itemsPerPage);
                 <select id="category" name="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <?php foreach ($allCategories as $cat): ?>
                         <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['nom']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="tag" class="block text-gray-700">Tags</label>
+                <select id="tag" name="tag" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <?php foreach ($allTags as $tag): ?>
+                        <option value="<?php echo htmlspecialchars($tag['id_tag']); ?>"><?php echo htmlspecialchars($tag['tag_name']); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

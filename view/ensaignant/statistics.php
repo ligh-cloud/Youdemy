@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../../model/statistic.php";
+require "../../model/statistics.php";
 
 $stats = new Statistics();
 $teacherId = $_SESSION['user_id'];
@@ -35,7 +35,7 @@ foreach ($monthlyEnrollments as $enrollment) {
       
 
         <div class="flex-1 p-8">
-            <!-- Analytics Overview -->
+      
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow">
                     <h3 class="text-lg font-semibold mb-2">Total Students</h3>
