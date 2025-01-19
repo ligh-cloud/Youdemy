@@ -43,5 +43,18 @@ class Tags {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['count'];
     }
+    public static function deleteTag($tagId) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("DELETE FROM tags WHERE id_tag  = :id");
+            $stmt->bindParam(':id', $tagId, PDO::PARAM_INT);
+            $result = $stmt->execute();
+
+            return $result;
+        } catch (PDOException $e) {
+            new Exception("Can't delete tag" . $e->getMessage());
+        }
+    }
+
 }
 ?>

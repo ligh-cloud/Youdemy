@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/htmx.org@1.7.0"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-50">
     <!-- Admin Navigation -->
@@ -187,11 +188,64 @@
         });
     </script>
 
-    <!-- Add a subtle pattern to the background -->
+
     <style>
         body {
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
     </style>
+    <script>
+ 
+    <?php if(isset($_SESSION['success'])): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '<?php echo $_SESSION['success']; ?>',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end',
+            background: '#4CAF50',
+            color: '#fff'
+        });
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
+    <?php if(isset($_SESSION['error'])): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '<?php echo $_SESSION['error']; ?>',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end',
+            background: '#F44336',
+            color: '#fff'
+        });
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    // Confirmation before delete
+    function confirmDelete(categoryId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            
+                document.querySelector(`form[data-category-id="${categoryId}"]`).submit();
+            }
+        });
+    }
+</script>
 </body>
 </html>

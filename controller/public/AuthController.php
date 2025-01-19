@@ -79,7 +79,7 @@ if (isset($_POST['signin'])) {
                 case 2: // Teacher
                     $user = Teacher::signin($email, $password);
                     if ($user->getEnseignant() === 'waiting') {
-                        header('Location: ../view/ensaignant/waiting_aprove.php');
+                        header('Location: ../../view/ensaignant/waiting_aprove.php');
                     } elseif ($user->getEnseignant() === 'accepted') {
                         header('Location: ../../view/ensaignant/teacher_dashboard.php');
                     } else {
