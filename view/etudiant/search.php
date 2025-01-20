@@ -49,9 +49,8 @@
 
             <main>
                 <div id="results" class="results-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Example of a course card -->
-
-                    <!-- Add more course cards here -->
+                   
+                
                 </div>
             </main>
         </div>

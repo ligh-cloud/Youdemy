@@ -44,7 +44,7 @@ $courses = Course::getCourseByStudent($userId);
             <header class="mb-6">
                 <div class="flex items-center p-4 bg-white shadow-md rounded-lg">
                     <div class="flex-shrink-0 flex items-center">
-                        <img src="/api/placeholder/40/40" alt="Logo" class="h-10 w-10 rounded-lg mr-2">
+                        
                         <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">Youdemy</h1>
                     </div>
                     <nav class="hidden lg:flex lg:space-x-8 ml-10">
@@ -69,8 +69,9 @@ $courses = Course::getCourseByStudent($userId);
                     <article class="course-card bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-transform duration-300">
                         <?php if (!empty($course['image'])): ?>
                         <div class="course-image mb-4">
-                            <img src="<?php echo htmlspecialchars($course['image']); ?>" alt="<?php echo htmlspecialchars($course['title']); ?>"
+                            <img src="../../uploads/<?php echo htmlspecialchars($course['image']); ?>" alt="<?php echo htmlspecialchars($course['title']); ?>"
                                 class="w-full h-40 object-cover rounded-lg">
+                            
                         </div>
                         <?php endif; ?>
 
