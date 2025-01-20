@@ -341,10 +341,10 @@ $courses = Course::getAll();
    
         function enrollCourse(courseId) {
         
-            notyf.success('Inscription au cours réussie !');
+            notyf.success('You need to login !');
         }
 
-        // Close modal when clicking outside
+
         document.getElementById('course-preview-modal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) {
                 e.currentTarget.classList.add('hidden');
@@ -352,7 +352,7 @@ $courses = Course::getAll();
             }
         });
 
-        // Search functionality
+
         let searchTimeout;
         document.getElementById('search-input').addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -365,9 +365,8 @@ $courses = Course::getAll();
             }, 300);
         });
 
-        // Initialize any tooltips or popovers if needed
         document.addEventListener('DOMContentLoaded', () => {
-            // Add any additional initialization code here
+  
         });
     </script>
 </body>

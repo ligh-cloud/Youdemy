@@ -49,7 +49,7 @@ $enrollment = $enrollments->getNumberEnrollmentsByUser($courseId);
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <?php if (!empty($course['image'])): ?>
                     <div class="course-image mb-4">
-                        <img src="<?php echo htmlspecialchars($course['image']); ?>" alt="<?php echo htmlspecialchars($course['title']); ?>" class="w-full h-60 object-cover rounded-lg">
+                        <img src="../../uploads/<?php echo htmlspecialchars($course['image']);   ?>" alt="<?php echo htmlspecialchars($course['title']); ?>" class="w-full h-60 object-cover rounded-lg">
                     </div>
                 <?php endif; ?>
 
@@ -73,6 +73,7 @@ $enrollment = $enrollments->getNumberEnrollmentsByUser($courseId);
                         <span class="font-semibold">Enrollment Count:</span> 
                         <?php echo htmlspecialchars($enrollment['enrollment_count']); ?>
                     </p>
+  
 
                     <?php if (!empty($course['content'])): ?>
                         <div class="course-content mb-4">
@@ -85,7 +86,7 @@ $enrollment = $enrollments->getNumberEnrollmentsByUser($courseId);
                         <div class="course-video mb-4">
                             <h3 class="text-xl font-semibold text-blue-500 mb-2">Course Video</h3>
                             <video controls class="w-full rounded-lg">
-                                <source src="<?php echo htmlspecialchars($course['video']); ?>" type="video/mp4">
+                                <source src="../../uploads/<?php echo htmlspecialchars($course['video']); ?>" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>

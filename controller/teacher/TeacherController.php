@@ -15,7 +15,7 @@ if (isset($_POST['add_course'])) {
         $categoryId = htmlspecialchars($_POST['category']);
         $tagId = htmlspecialchars($_POST['tag']);
         
-        $targetDir = "../../uploads/";
+        $targetDir = "../../uploads";
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
