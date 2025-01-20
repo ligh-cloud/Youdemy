@@ -1,8 +1,16 @@
 <?php
 session_start();
 
+require "../../model/statistics.php";
+
+$stats = new Statistics();
+$teacherId = $_SESSION['user_id'];
+$totalStudents = $stats->getTeacherTotalStudents($teacherId);
+$topCourses = $stats->getTotalCourse($teacherId);
+
+
 require "../../model/Course.php";
-$courses = new VideoCourse(null, null, null, $_SESSION['user_id'], null);
+$courses = new VideoCourse(null, null, null, $_SESSION['user_id'], null,NULL);
 $allCourses = $courses->getallCourse($_SESSION['user_id']);
 ?>
 
@@ -102,7 +110,7 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                         <i class="fas fa-book"></i>
                         <span>My Courses</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
+                    <a href="view_course_students.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
                                      transition-all duration-200 text-gray-700 hover:text-blue-600">
                         <i class="fas fa-users"></i>
                         <span>Students</span>
@@ -126,7 +134,7 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                         </div>
                         <div>
                             <h3 class="text-gray-600 font-medium">Total Students</h3>
-                            <p class="text-3xl font-bold text-gray-800">256</p>
+                            <p class="text-3xl font-bold text-gray-800"><?php echo $totalStudents; ?></p>
                         </div>
                     </div>
                 </div>
@@ -137,7 +145,7 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                         </div>
                         <div>
                             <h3 class="text-gray-600 font-medium">Active Courses</h3>
-                            <p class="text-3xl font-bold text-gray-800">8</p>
+                            <p class="text-3xl font-bold text-gray-800"><?php echo $topCourses['totalCourse']; ?></p>
                         </div>
                     </div>
                 </div>
@@ -170,9 +178,14 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                         <?php foreach($allCourses as $course): ?>
                         <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 
                                     transform hover:-translate-y-1">
-                            <img src="../../uploads/<?php echo $course['image'];?>" 
+                            <?php if($course['video']): ?>
+                                <img src="../../resourses/videotitle.png" alt="video">      
+                                <?php else: ?>  
+                            <img src="../../uploads/<?php echo $course['image'];?>"
+                                    
                                  alt="Course" 
                                  class="w-full h-48 object-cover rounded-t-lg">
+                                 <?php endif; ?>
                             <div class="p-4">
                                 <h3 class="font-semibold text-gray-800"><?php echo $course['title']; ?></h3>
                                 <div class="flex items-center justify-between mt-3">
@@ -186,10 +199,10 @@ $allCourses = $courses->getallCourse($_SESSION['user_id']);
                                     </span>
                                 </div>
                                 <div class="flex justify-end mt-4">
-                                    <button class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                <a href="edit_course.php?id=<?php echo htmlspecialchars($course['id_course']); ?>"><button  class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
                                         <i class="fas fa-edit"></i>
                                         Edit
-                                    </button>
+                                    </button></a>
                                 </div>
                             </div>
                         </div>

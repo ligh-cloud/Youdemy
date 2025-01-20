@@ -93,5 +93,77 @@ class Statistics {
         ");
         $stmt->execute();
     }
+    public function getTotalCourse($teacherID){
+        $stm = $this->db->prepare("SELECT COUNT(*) as totalCourse FROM courses WHERE teacher_id = :teacher_id");
+        $stm->bindParam(':teacher_id' , $teacherID);
+        $stm->execute();
+        return $stm->fetch(PDO::FETCH_ASSOC);
+    }
+    public static function getEnrolledStudentsForCourse($courseId) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            
+            $stmt = $db->prepare("
+                SELECT 
+                    u.id,
+                    u.nom,
+                    u.prenom,
+                    u.email,
+                    c.title as course_title,
+                    e.enrollment_date
+                FROM enrollenment e
+                JOIN users u ON e.id_user = u.id
+                JOIN courses c ON e.id_course = c.id_course
+                WHERE e.id_course = :course_id
+                ORDER BY u.nom, u.prenom
+            ");
+            
+            $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting enrolled students: " . $e->getMessage());
+            throw new Exception("Failed to retrieve enrolled students");
+        }
+    }
+
+    public static function getAllCoursesWithStudents($teacherId = null) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            
+            $query = "
+                SELECT 
+                    c.id_course,
+                    c.title,
+                    c.description,
+                    COUNT(DISTINCT e.id_user) as student_count,
+                    GROUP_CONCAT(DISTINCT CONCAT(u.nom, ' ', u.prenom)) as enrolled_students
+                FROM courses c
+                LEFT JOIN enrollenment e ON c.id_course = e.id_course
+                LEFT JOIN users u ON e.id_user = u.id
+            ";
+            
+            if ($teacherId) {
+                $query .= " WHERE c.teacher_id = :teacher_id";
+            }
+            
+            $query .= " GROUP BY c.id_course ORDER BY c.title";
+            
+            $stmt = $db->prepare($query);
+            
+            if ($teacherId) {
+                $stmt->bindParam(':teacher_id', $teacherId, PDO::PARAM_INT);
+            }
+            
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            error_log("Error getting courses with students: " . $e->getMessage());
+            throw new Exception("Failed to retrieve courses with students");
+        }
+    }
 }
+
 ?>

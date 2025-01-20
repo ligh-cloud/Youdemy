@@ -303,21 +303,20 @@ $courses = Course::getAll();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
-    <!-- Custom JavaScript -->
+   
     <script>
-        // Initialize AOS
+
         AOS.init({
             duration: 800,
             once: true
         });
 
-        // Initialize Notyf
         const notyf = new Notyf({
             duration: 3000,
             position: { x: 'right', y: 'top' }
         });
 
-        // Category filter functionality
+   
         document.querySelectorAll('.category-filter').forEach(button => {
             button.addEventListener('click', function() {
                 document.querySelectorAll('.category-filter').forEach(btn => {
@@ -327,7 +326,7 @@ $courses = Course::getAll();
             });
         });
 
-        // Course preview function
+        
         function previewCourse(courseId) {
             const modal = document.getElementById('course-preview-modal');
             // Fetch course details using HTMX
@@ -339,9 +338,9 @@ $courses = Course::getAll();
             document.body.style.overflow = 'hidden';
         }
 
-        // Course enrollment function
+   
         function enrollCourse(courseId) {
-            // You can implement the enrollment logic here
+        
             notyf.success('Inscription au cours réussie !');
         }
 

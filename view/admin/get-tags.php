@@ -1,6 +1,6 @@
 <?php
 require "../../model/tag.php";
-
+session_start();
 
 $itemsPerPage = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -110,6 +110,6 @@ $totalPages = ceil($totalTags / $itemsPerPage);
     <!-- Current datetime and user info -->
     <div class="text-sm text-gray-500 text-right mt-4">
         <p>Current Time (UTC): <?php echo date('Y-m-d H:i:s'); ?></p>
-        <p>User: <?php echo htmlspecialchars($_SESSION['login'] ?? 'ligh-cloud'); ?></p>
+        <p>User: <?php echo htmlspecialchars($_SESSION['nom']); ?></p>
     </div>
 </div>

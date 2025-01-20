@@ -1,13 +1,15 @@
 <?php
 require "database.php";
-abstract class Course {
+abstract class Course
+{
     protected $title;
     protected $description;
     protected $students = [];
     protected $db;
     protected $teacherId;
 
-    public function __construct($title, $description, $teacherId) {
+    public function __construct($title, $description, $teacherId)
+    {
         $this->title = $title;
         $this->description = $description;
         $this->teacherId = $teacherId;
@@ -17,20 +19,22 @@ abstract class Course {
     abstract public function addCourse();
     abstract public function showCourse();
 
-    public function ajouterCour() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description) VALUES (:title, :description)");
-        $stmt->bindParam(':title', $this->title);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->execute();
-        echo "ajouterCour: Course added.\n";
-    }
+    // public function ajouterCour() {
+    //     $stmt = $this->db->prepare("INSERT INTO courses (title, description) VALUES (:title, :description)");
+    //     $stmt->bindParam(':title', $this->title);
+    //     $stmt->bindParam(':description', $this->description);
+    //     $stmt->execute();
+    //     echo "ajouterCour: Course added.\n";
+    // }
 
-    public function afficheCours() {
+    public function afficheCours()
+    {
         echo "afficheCours: Displaying course details.\n";
         $this->showCourse();
     }
 
-    public function rechercheCour($keyword) {
+    public function rechercheCour($keyword)
+    {
         $stmt = $this->db->prepare("SELECT * FROM courses WHERE title LIKE :keyword OR description LIKE :keyword");
         $keyword = '%' . $keyword . '%';
         $stmt->bindParam(':keyword', $keyword);
@@ -48,7 +52,8 @@ abstract class Course {
         }
     }
 
-    public function inscriptionCour($studentId) {
+    public function inscriptionCour($studentId)
+    {
         if (!in_array($studentId, $this->students)) {
             $this->students[] = $studentId;
             $stmt = $this->db->prepare("INSERT INTO enrollenment (id_course, id_user) VALUES (:id_course, :id_user)");
@@ -61,7 +66,8 @@ abstract class Course {
         }
     }
 
-    public function suprimerCour() {
+    public function suprimerCour()
+    {
         $stmt = $this->db->prepare("DELETE FROM courses WHERE title = :title AND description = :description");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
@@ -71,8 +77,9 @@ abstract class Course {
         $this->description = null;
         $this->students = [];
     }
-  
-    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
+
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null)
+    {
         $courseId = $this->getCourseId();
         if ($courseId) {
             $stmt = $this->db->prepare("UPDATE courses SET title = :newTitle, description = :newDescription, content = :newContent, image = :newImage, video = :newVideo WHERE id_course = :id_course");
@@ -91,7 +98,8 @@ abstract class Course {
         }
     }
 
-    protected function getCourseId() {
+    protected function getCourseId()
+    {
         $stmt = $this->db->prepare("SELECT id_course FROM courses WHERE title = :title AND description = :description");
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
@@ -99,7 +107,8 @@ abstract class Course {
         $course = $stmt->fetch(PDO::FETCH_ASSOC);
         return $course ? $course['id_course'] : null;
     }
-    public static function getallCourse($teacherId){
+    public static function getallCourse($teacherId)
+    {
         $db = Database::getInstance()->getConnection();
         $stm = $db->prepare("SELECT *FROM courses WHERE teacher_id = :teacher_id");
         $stm->bindParam(':teacher_id', $teacherId);
@@ -107,27 +116,31 @@ abstract class Course {
         $allCourses = $stm->fetchall(PDO::FETCH_ASSOC);
         return $allCourses;
     }
-    public static function getAll() {
+    public static function getAll()
+    {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT * FROM courses");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function deleteById($id) {
+    public static function deleteById($id)
+    {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("DELETE FROM courses WHERE id_course = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public static function getTotalCourses() {
+    public static function getTotalCourses()
+    {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT COUNT(*) as total FROM courses");
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 
-    public static function getCoursesByCategory() {
+    public static function getCoursesByCategory()
+    {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT categories.nom, COUNT(courses.id_course) as total 
                               FROM courses 
@@ -137,7 +150,8 @@ abstract class Course {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getCourseWithMostStudents() {
+    public static function getCourseWithMostStudents()
+    {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT courses.title, COUNT(enrollenment.id_user) as students 
                               FROM enrollenment 
@@ -148,7 +162,8 @@ abstract class Course {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public static function getCourseByStudent($userId){
+    public static function getCourseByStudent($userId)
+    {
         try {
             $db = Database::getInstance()->getConnection();
             $stmt = $db->prepare("SELECT courses.id_course, courses.title, courses.description, courses.image, users.nom AS teacher_firstname, users.prenom AS teacher_name, categories.nom AS category_name 
@@ -165,7 +180,8 @@ abstract class Course {
             exit();
         }
     }
-    public static function getCourseDetail($courseId) {
+    public static function getCourseDetail($courseId)
+    {
         try {
             $db = Database::getInstance()->getConnection();
 
@@ -178,21 +194,20 @@ abstract class Course {
             $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
             $stmt->execute();
             $course = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
             if (!$course) {
-                return null;  
+                return null;
             }
-    
-   
+
+
             $stmt = $db->prepare("SELECT COUNT(*) AS enrollment_count FROM enrollenment WHERE id_course = :course_id");
             $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
             $stmt->execute();
             $enrollment = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $course['enrollment_count'] = $enrollment['enrollment_count'];
-            
+
             return $course;
-    
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return null;
@@ -201,37 +216,111 @@ abstract class Course {
 }
 
 
-class DocumentImageCourse extends Course {
+class DocumentImageCourse extends Course
+{
     private $document;
     private $image;
     private $categoryId;
+    private $tagId;
 
-    public function __construct($title, $description, $document, $image, $teacherId , $categoryId) {
+    public function __construct($title, $description, $document, $image, $teacherId, $categoryId, $tagId)
+    {
         parent::__construct($title, $description, $teacherId);
         $this->document = $document;
         $this->image = $image;
         $this->categoryId = $categoryId;
+        $this->tagId = $tagId;
     }
 
-    public function addCourse() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description, content, image, teacher_id, categorie_id) VALUES (:title, :description, :document, :image, :teacher_id, :category_id)");
-        $stmt->bindParam(':title', $this->title);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':document', $this->document);
-        $stmt->bindParam(':image', $this->image);
-        $stmt->bindParam(':teacher_id', $this->teacherId);
-        $stmt->bindParam(':category_id', $this->categoryId);
-        $stmt->execute();
-        echo "Course added with document and image.\n";
-    }
-    public function showCourse() {
-        echo "Title: {$this->title}\n";
-        echo "Description: {$this->description}\n";
-        echo "Document: {$this->document}\n";
-        echo "Image: {$this->image}\n";
+    public function addCourse()
+    {
+        try {
+            $this->db->beginTransaction();
+            $stmt = $this->db->prepare("
+                INSERT INTO courses (
+                    title, 
+                    description, 
+                    content, 
+                    image, 
+                    teacher_id, 
+                    categorie_id,
+                    tagId
+              
+                ) VALUES (
+                    :title, 
+                    :description, 
+                    :document, 
+                    :image, 
+                    :teacher_id, 
+                    :categorie_id,
+                    :tagId
+              
+                )
+            ");
+
+
+
+            $stmt->bindParam(':title', $this->title);
+            $stmt->bindParam(':description', $this->description);
+            $stmt->bindParam(':document', $this->document);
+            $stmt->bindParam(':image', $this->image);
+            $stmt->bindParam(':teacher_id', $this->teacherId);
+            $stmt->bindParam(':categorie_id', $this->categoryId);
+            $stmt->bindParam(':tagId', $this->tagId);
+
+
+            $stmt->execute();
+            $courseId = $this->db->lastInsertId();
+
+            $this->db->commit();
+            return $courseId;
+        } catch (PDOException $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw new Exception("Failed to add course: " . $e->getMessage());
+        }
     }
 
-    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
+    public function showCourse()
+    {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT c.*, u.nom as teacher_name, u.prenom as teacher_firstname,
+                       cat.nom as category_name, t.tag_name
+                FROM courses c
+                LEFT JOIN users u ON c.teacher_id = u.id
+                LEFT JOIN categories cat ON c.categorie_id = cat.id
+                LEFT JOIN tags t ON c.tagId = t.id
+                WHERE c.id_course = :course_id
+            ");
+
+            $courseId = $this->getCourseId();
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->execute();
+
+            $courseData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($courseData) {
+                return [
+                    'title' => $courseData['title'],
+                    'description' => $courseData['description'],
+                    'document' => $courseData['content'],
+                    'image' => $courseData['image'],
+                    'teacher' => $courseData['teacher_firstname'] . ' ' . $courseData['teacher_name'],
+                    'category' => $courseData['category_name'],
+                    'tag' => $courseData['tag_name'],
+                    'created_at' => $courseData['created_at']
+                ];
+            }
+            return null;
+        } catch (PDOException $e) {
+            throw new Exception("Failed to show course: " . $e->getMessage());
+        }
+    }
+
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null)
+    {
         parent::modifierCour($newTitle, $newDescription, $newContent, $newImage, $newVideo);
         if ($newContent !== null || $newImage !== null) {
             $courseId = $this->getCourseId();
@@ -249,36 +338,107 @@ class DocumentImageCourse extends Course {
             }
         }
     }
-    
 }
 
-class VideoCourse extends Course {
+class VideoCourse extends Course
+{
     private $video;
     private $categoryId;
-    public function __construct($title, $description, $video, $teacherId, $categoryId) {
+    private $tagId;
+
+    public function __construct($title, $description, $video, $teacherId, $categoryId, $tagId)
+    {
         parent::__construct($title, $description, $teacherId);
         $this->video = $video;
         $this->categoryId = $categoryId;
+        $this->tagId = $tagId;
     }
 
-    public function addCourse() {
-        $stmt = $this->db->prepare("INSERT INTO courses (title, description, video, teacher_id, categorie_id) VALUES (:title, :description, :video, :teacher_id, :category_id)");
-        $stmt->bindParam(':title', $this->title);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':video', $this->video);
-        $stmt->bindParam(':teacher_id', $this->teacherId);
-        $stmt->bindParam(':category_id', $this->categoryId);
-        $stmt->execute();
-        echo "Course added with video.\n";
+    public function addCourse()
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $stmt = $this->db->prepare("
+                INSERT INTO courses (
+                    title, 
+                    description, 
+                    video, 
+                    teacher_id, 
+                    categorie_id,
+                    tagId   
+    
+                ) VALUES (
+                    :title, 
+                    :description, 
+                    :video, 
+                    :teacher_id, 
+                    :categorie_id,
+                    :tagId
+       
+                )
+            ");
+
+
+
+            $stmt->bindParam(':title', $this->title);
+            $stmt->bindParam(':description', $this->description);
+            $stmt->bindParam(':video', $this->video);
+            $stmt->bindParam(':teacher_id', $this->teacherId);
+            $stmt->bindParam(':categorie_id', $this->categoryId);
+            $stmt->bindParam(':tagId', $this->tagId);
+
+            $stmt->execute();
+            $courseId = $this->db->lastInsertId();
+
+            $this->db->commit();
+            return $courseId;
+        } catch (PDOException $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw new Exception("Failed to add course: " . $e->getMessage());
+        }
     }
 
-    public function showCourse() {
-        echo "Title: {$this->title}\n";
-        echo "Description: {$this->description}\n";
-        echo "Video: {$this->video}\n";
+    public function showCourse()
+    {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT c.*, u.nom as teacher_name, u.prenom as teacher_firstname,
+                       cat.nom as category_name, t.tag_name
+                FROM courses c
+                LEFT JOIN users u ON c.teacher_id = u.id
+                LEFT JOIN categories cat ON c.categorie_id = cat.id
+                LEFT JOIN tags t ON c.tagId = t.id
+                WHERE c.id_course = :course_id
+            ");
+
+            $courseId = $this->getCourseId();
+            $stmt->bindParam(':course_id', $courseId);
+            $stmt->execute();
+
+            $courseData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($courseData) {
+                return [
+                    'title' => $courseData['title'],
+                    'description' => $courseData['description'],
+                    'video' => $courseData['video'],
+                    'teacher' => $courseData['teacher_firstname'] . ' ' . $courseData['teacher_name'],
+                    'category' => $courseData['category_name'],
+                    'tag' => $courseData['tag_name'],
+                    'created_at' => $courseData['created_at']
+                ];
+            }
+            return null;
+        } catch (PDOException $e) {
+            throw new Exception("Failed to show course: " . $e->getMessage());
+        }
     }
 
-    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null) {
+    public function modifierCour($newTitle = null, $newDescription = null, $newContent = null, $newImage = null, $newVideo = null)
+    {
         parent::modifierCour($newTitle, $newDescription, $newContent, $newImage, $newVideo);
         if ($newVideo !== null) {
             $courseId = $this->getCourseId();
@@ -295,4 +455,3 @@ class VideoCourse extends Course {
         }
     }
 }
-?>
