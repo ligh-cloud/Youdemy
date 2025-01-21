@@ -26,19 +26,70 @@ $courses = $result['success'] ? $result['courses'] : [];
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
                 <div class="text-2xl font-bold tracking-wider">
-                    <i class="fas fa-users mr-2"></i>Course Students
+                    <i class="fas fa-chalkboard-teacher mr-2"></i>Teacher Dashboard
                 </div>
-                <!-- ... rest of the header ... -->
+
+                <div class="flex items-center gap-6">
+                    <div class="relative">
+                        <input type="text" placeholder="Search courses..." 
+                               class="px-4 py-2 bg-white/10 rounded-lg text-white placeholder-gray-300 
+                                      focus:outline-none focus:ring-2 focus:ring-white/50 transition-all
+                                      w-64">
+                        <i class="fas fa-search absolute right-3 top-3 text-gray-300"></i>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-lg">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span class="font-medium"><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom']; ?></span>
+                    </div>
+                    <form method="POST" action="../../controller/public/AuthController.php">
+                        <button name="logout" type="submit" 
+                                class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg 
+                                       hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 
+                                       focus:ring-offset-2 transition-all duration-200 flex items-center gap-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Log out
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="flex min-h-screen">
+
+
+        <div class="flex min-h-screen bg-gray-50">
         <!-- Sidebar -->
         <div class="w-64 bg-white shadow-xl">
-            <!-- ... sidebar content ... -->
+            <div class="p-6">
+                <div class="space-y-1">
+                    <a href="teacher_dashboard.php" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
+                              transition-all duration-200 text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="get_my_courses.php" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
+                              transition-all duration-200 text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-users"></i>
+                        <span>My Courses</span>
+                    </a>
+                    <a href="get_my_courses.php" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 
+                              transition-all duration-200 text-blue-600">
+                        <i class="fas fa-book"></i>
+                        <span>Students</span>
+                    </a>
+                   
+                    <a href="statistics.php" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
+                              transition-all duration-200 text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </div>
+            </div>
         </div>
-
         <!-- Main Content -->
         <div class="flex-1 p-8">
             <div class="mb-6">

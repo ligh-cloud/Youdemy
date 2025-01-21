@@ -72,7 +72,7 @@ $courses = Course::getallCourse($_SESSION['user_id']);
                         <i class="fas fa-book"></i>
                         <span>My Courses</span>
                     </a>
-                    <a href="#" 
+                    <a href="view_course_students.php" 
                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 
                               transition-all duration-200 text-gray-700 hover:text-blue-600">
                         <i class="fas fa-users"></i>
