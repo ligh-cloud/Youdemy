@@ -51,15 +51,17 @@ function generateCourseCard($course) {
                 <span class="text-sm text-gray-500">
                     <i class="fas fa-user mr-2"></i>' . htmlspecialchars($course['teacher_name']) . '
                 </span>
-                <button onclick="enrollCourse(' . $course['id_course'] . ')" 
-                        class="enroll-button">
-                    <i class="fas fa-arrow-right mr-2"></i>
-                    View Course
-                </button>
+                <form action="../../controller/student/enroll.php" method="POST">
+                    <input type="hidden" name="id_course" value="' . htmlspecialchars($course['id_course']) . '">
+                    <button type="submit" class="enroll-button bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">
+                        Enroll
+                    </button>
+                </form>
             </div>
         </div>
     </div>';
 }
+
 
 function generatePagination($currentPage, $totalPages, $search) {
     $html = '';
@@ -84,7 +86,7 @@ function generatePagination($currentPage, $totalPages, $search) {
         }
     }
 
-    //disable the button if the page is the last
+  
     $nextDisabled = $currentPage >= $totalPages ? 'disabled' : '';
     $html .= '<button ' . $nextDisabled . '
               class="pagination-button ' . $nextDisabled . '"
