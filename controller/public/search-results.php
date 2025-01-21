@@ -1,73 +1,97 @@
 <?php
-require_once "../../model/search.php";
-
-$searchTerm = $_POST['search'] ?? '';
-$results = Search::searchCourses($searchTerm);
-
-if (empty($results)): ?>
 
 
+require_once "../../model/Course.php";
+require_once "../../model/database.php";
 
+$search = $_POST['search'] ?? '';
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 9; // Number of items per page
 
-<div class="no-results">
-    <p>No courses found. Try a different search term.</p>
-</div>
-
-<?php else: ?>
-<?php foreach ($results as $course): ?>
-<article class="course-card">
-    <?php if (!empty($course['image'])): ?>
-    <div class="course-image">
-        <img src="<?php echo htmlspecialchars($course['image']); ?>" alt="<?php echo htmlspecialchars($course['title']); ?>"
-            loading="lazy">
-    </div>
-    <?php endif; ?>
-
+try {
+  
+    $totalCourses = Course::getSearchCount($search);
+    $totalPages = ceil($totalCourses / $perPage);
     
-    <div class="course-content">
-        <h3><?php echo htmlspecialchars($course['title']); ?></h3>
 
-        <p class="teacher">
-            <span class="label">Teacher:</span>
-            <?php echo htmlspecialchars($course['teacher_firstname'] . ' ' . $course['teacher_name']); ?>
-        </p>
+    $offset = ($page - 1) * $perPage;
+    $courses = Course::searchCourses($search, $perPage, $offset);
 
-        <?php if (!empty($course['category_name'])): ?>
-        <p class="category">
-            <span class="label">Category:</span>
-            <?php echo htmlspecialchars($course['category_name']); ?>
-        </p>
-        <?php endif; ?>
+  
+    $coursesHtml = '';
+    foreach ($courses as $course) {
+        $coursesHtml .= generateCourseCard($course);
+    }
 
-        <?php if (!empty($course['tags'])): ?>
-        <div class="tags">
-            <?php foreach (explode(',', $course['tags']) as $tag): ?>
-            <span class="tag"><?php echo htmlspecialchars(trim($tag)); ?></span>
-            <?php endforeach; ?>
+    // Generate pagination HTML
+    $paginationHtml = generatePagination($page, $totalPages, $search);
+
+    // Return both course cards and pagination
+    echo '<div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 page-transition">' 
+         . $coursesHtml . 
+         '</div>' .
+         '<div class="flex items-center justify-center space-x-2 mt-8">' 
+         . $paginationHtml . 
+         '</div>';
+
+} catch (Exception $e) {
+    echo '<div class="text-red-500">Error: ' . $e->getMessage() . '</div>';
+}
+
+function generateCourseCard($course) {
+    return '
+    <div class="course-card bg-white rounded-xl overflow-hidden">
+        <img src="../../uploads/' . htmlspecialchars($course['image']) . '" 
+             alt="' . htmlspecialchars($course['title']) . '"
+             class="w-full h-48 object-cover">
+        <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">' . htmlspecialchars($course['title']) . '</h3>
+            <p class="text-gray-600 mb-4">' . htmlspecialchars(substr($course['description'], 0, 100)) . '...</p>
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-500">
+                    <i class="fas fa-user mr-2"></i>' . htmlspecialchars($course['teacher_name']) . '
+                </span>
+                <button onclick="enrollCourse(' . $course['id_course'] . ')" 
+                        class="enroll-button">
+                    <i class="fas fa-arrow-right mr-2"></i>
+                    View Course
+                </button>
+            </div>
         </div>
-        <?php endif; ?>
+    </div>';
+}
 
-        <p class="description">
-            <?php echo htmlspecialchars($course['description']); ?>
-        </p>
-        <form action="../../controller/student/enroll.php" method="POST">
-            <input type="hidden" name="id_course" value="<?php echo htmlspecialchars($course['id_course']); ?>">
-            <button type="submit" class="enroll-button bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">Enroll</button>
-        </form>
-        <form action="../../view/etudiant/course_details.php" method="GET">
-            <input type="hidden" name="id_course" value="<?php echo htmlspecialchars($course['id_course']); ?>">
-            <button type="submit" class="enroll-button bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">Preview Course  </button>
-        </form>
+function generatePagination($currentPage, $totalPages, $search) {
+    $html = '';
+    
+    // disable the previous if the page is <= 1
+    $prevDisabled = $currentPage <= 1 ? 'disabled' : '';
+    $html .= '<button ' . $prevDisabled . ' 
+              class="pagination-button ' . $prevDisabled . '"
+              hx-post="../../controller/public/search-results.php?page=' . ($currentPage - 1) . '"
+              hx-target="#search-container">
+              <i class="fas fa-chevron-left"></i>
+              </button>';
 
-        <?php if (!empty($course['video'])): ?>
-        <div class="course-preview">
-            <a href="#" class="preview-link" data-video="<?php echo htmlspecialchars($course['video']); ?>">
-                Watch Preview
-            </a>
-        </div>
-        <?php endif; ?>
-    </div>
-    </div>
-</article>
-<?php endforeach; ?>
-<?php endif; ?>
+   
+    for ($i = 1; $i <= $totalPages; $i++) {
+        if ($i == $currentPage) {
+            $html .= '<button class="pagination-button active">' . $i . '</button>';
+        } else {
+            $html .= '<button class="pagination-button"
+                      hx-post="../../controller/public/search-results.php?page=' . $i . '"
+                      hx-target="#search-container">' . $i . '</button>';
+        }
+    }
+
+    //disable the button if the page is the last
+    $nextDisabled = $currentPage >= $totalPages ? 'disabled' : '';
+    $html .= '<button ' . $nextDisabled . '
+              class="pagination-button ' . $nextDisabled . '"
+              hx-post="../../controller/public/search-results.php?page=' . ($currentPage + 1) . '"
+              hx-target="#search-container">
+              <i class="fas fa-chevron-right"></i>
+              </button>';
+
+    return $html;
+}

@@ -21,26 +21,26 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0 flex items-center">
-                            
+
                                     <h1 class="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
                                         Youdemy
                                     </h1>
                                 </div>
                                 <nav class="hidden lg:flex lg:space-x-1">
-                                    <a href="student_dashboard.php" 
-                                    class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <a href="student_dashboard.php"
+                                        class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
                                         <i class="fas fa-home mr-2"></i> Dashboard
                                     </a>
-                                    <a href="get_all_my_course.php" 
-                                    class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <a href="get_all_my_course.php"
+                                        class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
                                         <i class="fas fa-book-open mr-2"></i> My Courses
                                     </a>
-                                    <a href="search.php" 
-                                    class="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium flex items-center">
+                                    <a href="search.php"
+                                        class="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium flex items-center">
                                         <i class="fas fa-search mr-2"></i> Course Catalog
                                     </a>
-                                    <a href="#" 
-                                    class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <a href="#"
+                                        class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
                                         <i class="fas fa-chart-line mr-2"></i> Progress
                                     </a>
                                 </nav>
@@ -56,9 +56,9 @@
                             <input type="text"
                                 name="search"
                                 placeholder="Search courses, teachers, or topics..."
-                                hx-post="../../controller/public/search-results.php"
+                                hx-post="../../controller/public/search-results.php?page=1"
                                 hx-trigger="input changed delay:500ms, load"
-                                hx-target="#results"
+                                hx-target="#search-container"
                                 hx-indicator=".htmx-indicator"
                                 class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm">
                             <div class="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-3">
@@ -75,10 +75,17 @@
 
                 <!-- Enhanced Results Section -->
                 <main class="max-w-7xl mx-auto">
-                    <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Results will be loaded here -->
-                    </div>
-                </main>
+    <div id="search-container" class="space-y-8">
+        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Results will be loaded here -->
+        </div>
+        
+        <!-- Pagination -->
+        <div class="flex items-center justify-center space-x-2 pagination-container">
+            <!-- Pagination will be loaded here -->
+        </div>
+    </div>
+</main>
             </div>
         </div>
 
@@ -100,18 +107,38 @@
 
             /* Enhanced Animations */
             @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             @keyframes rotate {
-                100% { transform: rotate(360deg); }
+                100% {
+                    transform: rotate(360deg);
+                }
             }
 
             @keyframes dash {
-                0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
-                50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
-                100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+                0% {
+                    stroke-dasharray: 1, 150;
+                    stroke-dashoffset: 0;
+                }
+
+                50% {
+                    stroke-dasharray: 90, 150;
+                    stroke-dashoffset: -35;
+                }
+
+                100% {
+                    stroke-dasharray: 90, 150;
+                    stroke-dashoffset: -124;
+                }
             }
 
             /* Enhanced Components */
@@ -165,11 +192,63 @@
 
             /* Responsive Adjustments */
             @media (max-width: 768px) {
-                .container { padding: 1rem; }
-                .search-wrapper { padding: 0 1rem; }
-                header h1 { font-size: 2rem; }
+                .container {
+                    padding: 1rem;
+                }
+
+                .search-wrapper {
+                    padding: 0 1rem;
+                }
+
+                header h1 {
+                    font-size: 2rem;
+                }
             }
-        </style>
+
+
+
+    .pagination-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+
+    .pagination-button:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .pagination-button.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .pagination-button.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Animation for page transition */
+    .page-transition {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 
         <script>
             function enrollCourse(courseId) {
@@ -177,4 +256,5 @@
             }
         </script>
     </body>
+
     </html>

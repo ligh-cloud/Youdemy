@@ -213,6 +213,33 @@ abstract class Course
             return null;
         }
     }
+
+public static function getSearchCount($search) {
+    $db = Database::getInstance()->getConnection();
+    $query = "SELECT COUNT(*) as count FROM courses WHERE title LIKE :search OR description LIKE :search";
+    $stmt = $db->prepare($query);
+    $searchTerm = "%{$search}%";
+    $stmt->bindParam(':search', $searchTerm);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+}
+
+public static function searchCourses($search, $limit, $offset) {
+    $db = Database::getInstance()->getConnection();
+    $query = "SELECT c.*, u.nom as teacher_name 
+              FROM courses c 
+              LEFT JOIN users u ON c.teacher_id = u.id 
+              WHERE c.title LIKE :search OR c.description LIKE :search 
+              LIMIT :limit OFFSET :offset";
+    
+    $stmt = $db->prepare($query);
+    $searchTerm = "%{$search}%";
+    $stmt->bindParam(':search', $searchTerm);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 
 
