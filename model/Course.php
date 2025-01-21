@@ -454,4 +454,45 @@ class VideoCourse extends Course
             }
         }
     }
+    public static function filterCourse($search = '', $categoryId = 'all')
+{
+    try {
+        $db = Database::getInstance()->getConnection();
+        
+        $query = "SELECT c.*, cat.nom as category_name, 
+                         CONCAT(u.nom, ' ', u.prenom) as teacher_name
+                  FROM courses c 
+                  LEFT JOIN categories cat ON c.categorie_id = cat.id 
+                  LEFT JOIN users u ON c.teacher_id = u.id 
+                  WHERE 1=1";
+        
+        $params = [];
+        
+        if (!empty($search)) {
+            $query .= " AND (c.title LIKE :search 
+                           OR c.description LIKE :search 
+                           OR cat.nom LIKE :search)";
+            $params[':search'] = "%{$search}%";
+        }
+        
+        if ($categoryId !== 'all') {
+            $query .= " AND c.categorie_id = :category_id";
+            $params[':category_id'] = $categoryId;
+        }
+        
+        $query .= " ORDER BY c.title ASC";
+        
+        $stmt = $db->prepare($query);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) {
+        error_log("Error filtering courses: " . $e->getMessage());
+        return [];
+    }
+}
 }
