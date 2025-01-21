@@ -2,124 +2,166 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100">
-
-
-<!-- Student Navigation -->
-    <nav class="bg-white shadow-lg">
-        
-   
+<body class="bg-gray-50 font-[Inter]">
+    <!-- Enhanced Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
-                <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
-                    <button
-                        name="logout"
-                        type="submit"
-                        class="px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all">
-                        Log out
-                    </button>
-                </form>
-                <div class="text-xl font-bold text-purple-600">Student Dashboard</div>
-                <div class="flex items-center gap-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Search courses..."
-                            class="px-4 py-2 border rounded-lg">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <img src="/api/placeholder/40/40" alt="Logo" class="h-10 w-10 rounded-xl shadow-md">
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></span>
-                        <img src="/api/placeholder/32/32" class="w-8 h-8 rounded-full">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 text-transparent bg-clip-text">
+                        Youdemy
+                    </span>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <input type="text" placeholder="Search courses..." 
+                            class="w-64 px-4 py-2 pl-10 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900"><?php echo $_SESSION['nom'] . " " . $_SESSION['prenom'] ?></p>
+                                <p class="text-xs text-gray-500">Student</p>
+                            </div>
+                            <img src="/api/placeholder/32/32" class="w-10 h-10 rounded-full border-2 border-purple-500">
+                        </div>
+                        
+                        <form method="POST" action="../../controller/public/AuthController.php">
+                            <button name="logout" type="submit"
+                                class="px-4 py-2 bg-red-500 text-white font-medium rounded-xl hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-all flex items-center space-x-2">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
-    <?php
-
-
-
-//  success message
-
-if (isset($_SESSION['success'])) {
-    echo '<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">Success!</strong>
-            <span class="block sm:inline">' . $_SESSION['success'] . '</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.707 10l3.641 3.641a.5.5 0 1 1-.707.707L10 10.707l-3.641 3.641a.5.5 0 0 1-.707-.707L9.293 10 5.652 6.359a.5.5 0 1 1 .707-.707L10 9.293l3.641-3.641a.5.5 0 0 1 .707 0z"/></svg>
-            </span>
-          </div>';
-    unset($_SESSION['success']); 
-}
-
-// error message
-if (isset($_SESSION['error'])) {
-    echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">Error!</strong>
-            <span class="block sm:inline">' . $_SESSION['error'] . '</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.707 10l3.641 3.641a.5.5 0 1 1-.707.707L10 10.707l-3.641 3.641a.5.5 0 0 1-.707-.707L9.293 10 5.652 6.359a.5.5 0 1 1 .707-.707L10 9.293l3.641-3.641a.5.5 0 0 1 .707 0z"/></svg>
-            </span>
-          </div>';
-    unset($_SESSION['error']); 
-}
-?>      
 
     <div class="flex min-h-screen">
-
+        <!-- Enhanced Sidebar -->
         <div class="w-64 bg-white shadow-lg">
-            <div class="p-4">
-                <div class="space-y-2">
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="get_all_my_course.php" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
-                    <a href="search.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Progress</a>
+            <div class="p-6">
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-xl hover:bg-purple-50 hover:text-purple-600 transition-all">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="get_all_my_course.php" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-xl hover:bg-purple-50 hover:text-purple-600 transition-all">
+                        <i class="fas fa-book-open"></i>
+                        <span>My Courses</span>
+                    </a>
+                    <a href="search.php" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-xl hover:bg-purple-50 hover:text-purple-600 transition-all">
+                        <i class="fas fa-search"></i>
+                        <span>Course Catalog</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-xl hover:bg-purple-50 hover:text-purple-600 transition-all">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progress</span>
+                    </a>
                 </div>
             </div>
         </div>
 
-
+        <!-- Enhanced Main Content -->
         <div class="flex-1 p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Enrolled Courses</h3>
-                    <p class="text-3xl font-bold">5</p>
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-3 bg-purple-100 rounded-xl">
+                            <i class="fas fa-book text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700">Enrolled Courses</h3>
+                            <p class="text-3xl font-bold text-purple-600">5</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Completed Courses</h3>
-                    <p class="text-3xl font-bold">3</p>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-3 bg-green-100 rounded-xl">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700">Completed Courses</h3>
+                            <p class="text-3xl font-bold text-green-600">3</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">Hours Learned</h3>
-                    <p class="text-3xl font-bold">42</p>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-3 bg-blue-100 rounded-xl">
+                            <i class="fas fa-clock text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700">Hours Learned</h3>
+                            <p class="text-3xl font-bold text-blue-600">42</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Enrolled Courses -->
-            <div class="bg-white rounded-lg shadow mb-6">
+            <!-- Enhanced Course Section -->
+            <div class="bg-white rounded-xl shadow-sm">
                 <div class="p-6">
-                    <h2 class="text-xl font-bold mb-4">My Courses</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">My Courses</h2>
+                        <a href="search.php" class="text-purple-600 hover:text-purple-700 font-medium flex items-center space-x-2">
+                            <span>Find more courses</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="border rounded-lg overflow-hidden">
-                            <img src="/api/placeholder/400/200" alt="Course" class="w-full h-40 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-semibold">Web Development Bootcamp</h3>
-                                <p class="text-gray-600 text-sm mb-2">Progress: 60%</p>
-                                <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
-                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 60%"></div>
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300">
+                            <div class="relative">
+                                <img src="/api/placeholder/400/200" alt="Course" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4">
+                                    <span class="bg-purple-100 text-purple-600 text-xs font-medium px-2.5 py-1 rounded-lg">
+                                        In Progress
+                                    </span>
                                 </div>
-                                <button class="w-full bg-purple-600 text-white py-2 rounded-lg">
-                                    Continue Learning
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-2">Web Development Bootcamp</h3>
+                                <div class="flex items-center text-sm text-gray-500 mb-4">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>12 hours left</span>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Progress</span>
+                                        <span class="text-purple-600 font-medium">60%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-purple-600 text-white py-2.5 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-play-circle"></i>
+                                    <span>Continue Learning</span>
                                 </button>
                             </div>
                         </div>
@@ -128,21 +170,40 @@ if (isset($_SESSION['error'])) {
             </div>
         </div>
     </div>
-</body>
 
-<script>
-      
-        const notyf = new Notyf();
+    <script>
+        const notyf = new Notyf({
+            duration: 5000,
+            position: {x: 'right', y: 'top'},
+            types: [
+                {
+                    type: 'success',
+                    background: '#10B981',
+                    icon: {
+                        className: 'fas fa-check-circle',
+                        tagName: 'i'
+                    }
+                },
+                {
+                    type: 'error',
+                    background: '#EF4444',
+                    icon: {
+                        className: 'fas fa-times-circle',
+                        tagName: 'i'
+                    }
+                }
+            ]
+        });
 
         <?php if (isset($_SESSION['success'])): ?>
             notyf.success("<?php echo $_SESSION['success']; ?>");
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
 
- 
         <?php if (isset($_SESSION['error'])): ?>
             notyf.error("<?php echo $_SESSION['error']; ?>");
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
     </script>
+</body>
 </html>
