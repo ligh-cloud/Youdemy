@@ -9,6 +9,9 @@
     <title>Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -16,6 +19,8 @@
 
 <!-- Student Navigation -->
     <nav class="bg-white shadow-lg">
+        
+   
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16 items-center">
                 <form method="POST" action="../../controller/public/AuthController.php" class="flex justify-center items-center p-4 bg-gray-100 rounded-lg shadow-md">
@@ -125,4 +130,19 @@ if (isset($_SESSION['error'])) {
     </div>
 </body>
 
+<script>
+      
+        const notyf = new Notyf();
+
+        <?php if (isset($_SESSION['success'])): ?>
+            notyf.success("<?php echo $_SESSION['success']; ?>");
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+ 
+        <?php if (isset($_SESSION['error'])): ?>
+            notyf.error("<?php echo $_SESSION['error']; ?>");
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+    </script>
 </html>

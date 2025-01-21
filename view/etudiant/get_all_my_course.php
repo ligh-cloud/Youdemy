@@ -29,31 +29,39 @@ $courses = Course::getCourseByStudent($userId);
 
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
-        <div class="w-64 bg-white shadow-lg">
-            <div class="p-4">
-                <div class="space-y-2">
-                    <a href="student_dashboard.php" class="block px-4 py-2 rounded hover:bg-purple-50">Dashboard</a>
-                    <a href="get_all_my_course.php" class="block px-4 py-2 rounded hover:bg-purple-50">My Courses</a>
-                    <a href="search.php" class="block px-4 py-2 rounded hover:bg-purple-50">Course Catalog</a>
-                    <a href="#" class="block px-4 py-2 rounded hover:bg-purple-50">Progress</a>
-                </div>
-            </div>
-        </div>
+        
 
         <div class="container mx-auto p-4">
             <header class="mb-6">
-                <div class="flex items-center p-4 bg-white shadow-md rounded-lg">
-                    <div class="flex-shrink-0 flex items-center">
-                        
-                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">Youdemy</h1>
+            <div class="bg-white shadow-lg rounded-xl p-4 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 flex items-center">
+                           
+                                <h1 class="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+                                    Youdemy
+                                </h1>
+                            </div>
+                            <nav class="hidden lg:flex lg:space-x-1">
+                                <a href="student_dashboard.php" 
+                                   class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <i class="fas fa-home mr-2"></i> Dashboard
+                                </a>
+                                <a href="get_all_my_course.php" 
+                                   class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <i class="fas fa-book-open mr-2"></i> My Courses
+                                </a>
+                                <a href="search.php" 
+                                   class="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium flex items-center">
+                                    <i class="fas fa-search mr-2"></i> Course Catalog
+                                </a>
+                                <a href="#" 
+                                   class="px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 flex items-center">
+                                    <i class="fas fa-chart-line mr-2"></i> Progress
+                                </a>
+                            </nav>
+                        </div>
                     </div>
-                    <nav class="hidden lg:flex lg:space-x-8 ml-10">
-                        <a href="student_dashboard.php" class="nav-link active text-blue-600 hover:underline" data-section="home">Accueil</a>
-                        <a href="#" class="nav-link text-gray-600 hover:underline" data-section="courses">Cours</a>
-                        <a href="#" class="nav-link student-only hidden text-gray-600 hover:underline" data-section="my-courses">Mes Cours</a>
-                        <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="manage">Gérer</a>
-                        <a href="#" class="nav-link teacher-only hidden text-gray-600 hover:underline" data-section="stats">Statistiques</a>
-                    </nav>
                 </div>
                 <h1 class="text-center text-3xl font-bold mt-4">My Courses</h1>
             </header>
