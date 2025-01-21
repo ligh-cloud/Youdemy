@@ -19,13 +19,6 @@ abstract class Course
     abstract public function addCourse();
     abstract public function showCourse();
 
-    // public function ajouterCour() {
-    //     $stmt = $this->db->prepare("INSERT INTO courses (title, description) VALUES (:title, :description)");
-    //     $stmt->bindParam(':title', $this->title);
-    //     $stmt->bindParam(':description', $this->description);
-    //     $stmt->execute();
-    //     echo "ajouterCour: Course added.\n";
-    // }
 
     public function afficheCours()
     {
