@@ -15,61 +15,97 @@ if (isset($_POST['add_course'])) {
         $categoryId = htmlspecialchars($_POST['category']);
         $tagId = htmlspecialchars($_POST['tag']);
         
-        $targetDir = "../../uploads";
+
+        $targetDir = dirname(dirname(__DIR__)) . "/uploads/";
+        
         if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
+            if (!mkdir($targetDir, 0777, true)) {
+                throw new Exception("Failed to create uploads directory");
+            }
         }
 
-        function uploadFile($file) {
-            global $targetDir; 
-            $fileName = basename($file["name"]);
-            $uniqueName = uniqid() . '_' . time() . '.' . strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $targetFile = $targetDir . $uniqueName; 
+        function uploadFile($file, $targetDir) {
+      
+            $fileExtension = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
             
+         
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'mp4', 'mov'];
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                throw new Exception("Invalid file type");
+            }
+
+          
+            $uniqueName = uniqid() . '_' . time() . '.' . $fileExtension;
+            $targetFile = $targetDir . $uniqueName;
+            
+          
+            if (!is_uploaded_file($file["tmp_name"])) {
+                throw new Exception("File was not uploaded via HTTP POST");
+            }
+
+   
             if (!move_uploaded_file($file["tmp_name"], $targetFile)) {
-                throw new Exception("Failed to move uploaded file");
+                throw new Exception("Failed to move uploaded file: " . error_get_last()['message']);
             }
             
-            return $uniqueName; 
+            return $uniqueName;
         }
         
         $documentPath = null;
         $imagePath = null;
         $videoPath = null;
 
-        if (!empty($_FILES["document"]["name"])) {
-            $documentPath = uploadFile($_FILES["document"]);
-        }
-        if (!empty($_FILES["image"]["name"])) {
-            $imagePath = uploadFile($_FILES["image"]);
 
-        }
-        if (!empty($_FILES["video"]["name"])) {
-            $videoPath = uploadFile($_FILES["video"]);
+        if (!empty($_FILES["document"]["name"])) {
+            $documentPath = uploadFile($_FILES["document"], $targetDir);
         }
         
+        if (!empty($_FILES["image"]["name"])) {
+            $imagePath = uploadFile($_FILES["image"], $targetDir);
+        }
+        
+        if (!empty($_FILES["video"]["name"])) {
+            $videoPath = uploadFile($_FILES["video"], $targetDir);
+        }
+        
+
         if ($videoPath) {
             $course = new VideoCourse($title, $description, $videoPath, $teacherId, $categoryId, $tagId);
-            $course->addCourse();
+            $courseId = $course->addCourse();
             $_SESSION['success'] = "Video course added successfully";
-            echo "coure added successfuly";
         } else {
             $course = new DocumentImageCourse($title, $description, $documentPath, $imagePath, $teacherId, $categoryId, $tagId);
-            $course->addCourse();
+            $courseId = $course->addCourse();
             $_SESSION['success'] = "Document course added successfully";
-            echo "course without a video added succesfully";
         }
 
-        header("Location: ../../view/ensaignant/teacher_dashboard.php");
-        exit();
+        if ($courseId) {
+ 
+            error_log("Course added successfully. ID: " . $courseId);
+            header("Location: ../../view/ensaignant/teacher_dashboard.php");
+            exit();
+        } else {
+            throw new Exception("Failed to add course to database");
+        }
 
     } catch (Exception $e) {
-        $_SESSION['error'] = $e->getMessage();
-        error_log($e->getMessage());  
-        header("Location: " . $_SERVER['PHP_SELF']);
-        echo "can't add the course ". $e->getMessage();
+
+        error_log("Error adding course: " . $e->getMessage());
+        $_SESSION['error'] = "Failed to add course: " . $e->getMessage();
+        
+
+        if (isset($documentPath) && file_exists($targetDir . $documentPath)) {
+            unlink($targetDir . $documentPath);
+        }
+        if (isset($imagePath) && file_exists($targetDir . $imagePath)) {
+            unlink($targetDir . $imagePath);
+        }
+        if (isset($videoPath) && file_exists($targetDir . $videoPath)) {
+            unlink($targetDir . $videoPath);
+        }
+        
+        header("Location: ../../view/ensaignant/add_course.php");
         exit();
     }
 }
 ?>
-
