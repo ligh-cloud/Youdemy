@@ -115,10 +115,7 @@ $courses = Course::getAll();
                                     <h3 class="text-xl font-semibold text-gray-800">
                                         <?php echo $course['title']; ?>
                                     </h3>
-                                    <span class="text-sm text-gray-500">
-                                        <i class="fas fa-clock mr-1"></i>
-                                        <?php echo date('Y-m-d', strtotime($course['created_at'])); ?>
-                                    </span>
+                                   
                                 </div>
                                 
                                 <p class="text-gray-600 mb-4 line-clamp-3">
@@ -128,7 +125,7 @@ $courses = Course::getAll();
                                 <div class="flex justify-between items-center pt-4 border-t">
                                     <div class="flex items-center text-gray-600">
                                         <i class="fas fa-user-graduate mr-2"></i>
-                                        <span>Students: <?php echo $course['enrolled_count'] ?? 0; ?></span>
+                                      
                                     </div>
                                     <form method="post" action="../../controller/admin/course_manage.php" 
                                           onsubmit="return confirm('Are you sure you want to delete this course?');">
